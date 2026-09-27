@@ -45,6 +45,45 @@ importers:
         specifier: ^5.0.2
         version: 5.0.2(@types/node@26.6.3)(vite@8.3.1(@types/node@26.6.3))
 
+  apps/api:
+    dependencies:
+      '@mcp-hub/api':
+        specifier: workspace:*
+        version: link:../../packages/api
+      '@mcp-hub/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@mcp-hub/database':
+        specifier: workspace:*
+        version: link:../../packages/database
+      '@mcp-hub/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+
+  apps/worker:
+    dependencies:
+      '@mcp-hub/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
+      '@mcp-hub/api':
+        specifier: workspace:*
+        version: link:../../packages/api
+      '@mcp-hub/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@mcp-hub/database':
+        specifier: workspace:*
+        version: link:../../packages/database
+      '@mcp-hub/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+
   examples/flaky-server:
     dependencies:
       '@modelcontextprotocol/sdk':
@@ -180,6 +219,37 @@ importers:
         specifier: workspace:*
         version: link:../security
 
+  packages/mcp-server:
+    dependencies:
+      '@mcp-hub/sdk':
+        specifier: workspace:*
+        version: link:../sdk
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.30.1
+        version: 1.30.1(zod@4.6.5)
+      zod:
+        specifier: ^4.6.5
+        version: 4.6.5
+    devDependencies:
+      '@mcp-hub/api':
+        specifier: workspace:*
+        version: link:../api
+      '@mcp-hub/config':
+        specifier: workspace:*
+        version: link:../config
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mcp-hub/database':
+        specifier: workspace:*
+        version: link:../database
+      '@mcp-hub/mcp-client':
+        specifier: workspace:*
+        version: link:../mcp-client
+      '@mcp-hub/security':
+        specifier: workspace:*
+        version: link:../security
+
   packages/observability:
     dependencies:
       '@mcp-hub/core':
@@ -194,6 +264,8 @@ importers:
       '@mcp-hub/security':
         specifier: workspace:*
         version: link:../security
+
+  packages/sdk: {}
 
   packages/search:
     dependencies:

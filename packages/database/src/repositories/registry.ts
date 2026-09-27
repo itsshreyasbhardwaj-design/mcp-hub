@@ -346,7 +346,7 @@ export class RegistryRepository {
           and health_interval_seconds is not null
           and (
             health_checked_at is null
-            or health_checked_at < $1 - make_interval(secs => health_interval_seconds)
+            or health_checked_at < $1::timestamptz - make_interval(secs => health_interval_seconds::double precision)
           )
         order by coalesce(health_checked_at, to_timestamp(0)) asc
         limit $2`,

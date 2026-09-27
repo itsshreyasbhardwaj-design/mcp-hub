@@ -213,6 +213,50 @@ describe('registry repository', () => {
   });
 });
 
+  it('selects only servers whose health interval has elapsed', async () => {
+    const localOrg = await identity.createOrganization({ name: 'Scan', slug: uniq('scan') });
+    const due = await registry.createServer({
+      organizationId: localOrg.id,
+      slug: uniq('due'),
+      name: 'Due',
+      status: 'active',
+      healthIntervalSeconds: 300,
+    });
+    const notDue = await registry.createServer({
+      organizationId: localOrg.id,
+      slug: uniq('fresh'),
+      name: 'Fresh',
+      status: 'active',
+      healthIntervalSeconds: 3600,
+    });
+    const unscheduled = await registry.createServer({
+      organizationId: localOrg.id,
+      slug: uniq('manual'),
+      name: 'Manual',
+      status: 'active',
+      healthIntervalSeconds: null,
+    });
+    const demo = await registry.createServer({
+      organizationId: localOrg.id,
+      slug: uniq('demo'),
+      name: 'Demo',
+      status: 'active',
+      healthIntervalSeconds: 60,
+      isDemo: true,
+    });
+
+    await registry.setHealthStatus(localOrg.id, due.id, 'healthy', new Date(Date.now() - 600_000));
+    await registry.setHealthStatus(localOrg.id, notDue.id, 'healthy', new Date());
+
+    const scanned = (await registry.listServersDueForHealthCheck(50)).map((s) => s.id);
+    expect(scanned).toContain(due.id);
+    expect(scanned).not.toContain(notDue.id);
+    // Never checked before, but no interval configured: manual only.
+    expect(scanned).not.toContain(unscheduled.id);
+    // Demo servers point at endpoints that do not exist; never dial them.
+    expect(scanned).not.toContain(demo.id);
+  });
+
 describe('governance repository', () => {
   it('records validation runs with findings', async () => {
     const server = await registry.createServer({
