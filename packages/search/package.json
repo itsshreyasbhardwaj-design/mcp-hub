@@ -1,0 +1,30 @@
+{
+  "name": "@mcp-hub/search",
+  "version": "0.1.0",
+  "description": "Search provider abstraction with a PostgreSQL implementation",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b --watch --preserveWatchOutput",
+    "clean": "rm -rf dist .turbo *.tsbuildinfo",
+    "lint": "eslint src",
+    "typecheck": "tsc -b --noEmit false",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@mcp-hub/core": "workspace:*",
+    "@mcp-hub/database": "workspace:*"
+  }
+}

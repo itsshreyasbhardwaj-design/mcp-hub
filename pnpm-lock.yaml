@@ -54,6 +54,15 @@ importers:
         specifier: ^4.6.5
         version: 4.6.5
 
+  packages/analytics:
+    dependencies:
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mcp-hub/database':
+        specifier: workspace:*
+        version: link:../database
+
   packages/config:
     dependencies:
       '@mcp-hub/core':
@@ -105,6 +114,24 @@ importers:
         specifier: workspace:*
         version: link:../core
 
+  packages/permissions:
+    dependencies:
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mcp-hub/security':
+        specifier: workspace:*
+        version: link:../security
+
+  packages/search:
+    dependencies:
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mcp-hub/database':
+        specifier: workspace:*
+        version: link:../database
+
   packages/security:
     dependencies:
       '@mcp-hub/config':
@@ -116,6 +143,39 @@ importers:
       '@mcp-hub/observability':
         specifier: workspace:*
         version: link:../observability
+
+  packages/testing:
+    dependencies:
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mcp-hub/mcp-client':
+        specifier: workspace:*
+        version: link:../mcp-client
+      '@mcp-hub/observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@mcp-hub/security':
+        specifier: workspace:*
+        version: link:../security
+      '@mcp-hub/validator':
+        specifier: workspace:*
+        version: link:../validator
+
+  packages/validator:
+    dependencies:
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mcp-hub/security':
+        specifier: workspace:*
+        version: link:../security
+
+  packages/versioning:
+    dependencies:
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../core
 
 packages:
 
