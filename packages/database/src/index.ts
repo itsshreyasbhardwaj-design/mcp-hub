@@ -1,0 +1,16 @@
+export * from './driver.js';
+export * from './client.js';
+export * from './migrate.js';
+export * from './sqlutil.js';
+export * from './rows.js';
+export { migrations, type Migration } from './migrations/index.js';
+export * from './repositories/identity.js';
+export * from './repositories/registry.js';
+export * from './repositories/governance.js';
+export * from './repositories/audit.js';
+export * from './repositories/analytics.js';
+export * from './repositories/search.js';
+export * from './repositories/jobs.js';
+export * from './repositories/secrets.js';
+export * from './repositories/sessions.js';
+export * from './testkit.js';
