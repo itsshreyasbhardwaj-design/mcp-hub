@@ -20,7 +20,7 @@ export interface StdioTransportConfig {
 }
 
 export interface HttpTransportConfig {
-  kind: 'streamable-http' | 'sse';
+  kind: 'streamable-http';
   url: string;
   /** Header names only. Values live in the encrypted credential store. */
   headerKeys: string[];

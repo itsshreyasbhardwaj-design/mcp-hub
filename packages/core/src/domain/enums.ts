@@ -4,7 +4,7 @@ export type Visibility = (typeof VISIBILITY)[number];
 export const SERVER_STATUS = ['draft', 'active', 'deprecated', 'archived'] as const;
 export type ServerStatus = (typeof SERVER_STATUS)[number];
 
-export const TRANSPORT_KINDS = ['stdio', 'streamable-http', 'sse'] as const;
+export const TRANSPORT_KINDS = ['stdio', 'streamable-http'] as const;
 export type TransportKind = (typeof TRANSPORT_KINDS)[number];
 
 export const HEALTH_STATUS = ['healthy', 'degraded', 'failing', 'unknown'] as const;
