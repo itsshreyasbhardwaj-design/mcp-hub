@@ -11,6 +11,15 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.11.0)
+      '@mcp-hub/api':
+        specifier: workspace:*
+        version: link:packages/api
+      '@mcp-hub/config':
+        specifier: workspace:*
+        version: link:packages/config
+      '@mcp-hub/database':
+        specifier: workspace:*
+        version: link:packages/database
       '@types/node':
         specifier: ^26.6.3
         version: 26.6.3
@@ -62,6 +71,69 @@ importers:
       '@mcp-hub/database':
         specifier: workspace:*
         version: link:../database
+
+  packages/api:
+    dependencies:
+      '@mcp-hub/analytics':
+        specifier: workspace:*
+        version: link:../analytics
+      '@mcp-hub/assistant':
+        specifier: workspace:*
+        version: link:../assistant
+      '@mcp-hub/config':
+        specifier: workspace:*
+        version: link:../config
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mcp-hub/database':
+        specifier: workspace:*
+        version: link:../database
+      '@mcp-hub/mcp-client':
+        specifier: workspace:*
+        version: link:../mcp-client
+      '@mcp-hub/observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@mcp-hub/permissions':
+        specifier: workspace:*
+        version: link:../permissions
+      '@mcp-hub/search':
+        specifier: workspace:*
+        version: link:../search
+      '@mcp-hub/security':
+        specifier: workspace:*
+        version: link:../security
+      '@mcp-hub/testing':
+        specifier: workspace:*
+        version: link:../testing
+      '@mcp-hub/validator':
+        specifier: workspace:*
+        version: link:../validator
+      '@mcp-hub/versioning':
+        specifier: workspace:*
+        version: link:../versioning
+      zod:
+        specifier: ^4.6.5
+        version: 4.6.5
+
+  packages/assistant:
+    dependencies:
+      '@mcp-hub/config':
+        specifier: workspace:*
+        version: link:../config
+      '@mcp-hub/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mcp-hub/database':
+        specifier: workspace:*
+        version: link:../database
+      '@mcp-hub/observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@mcp-hub/security':
+        specifier: workspace:*
+        version: link:../security
 
   packages/config:
     dependencies:

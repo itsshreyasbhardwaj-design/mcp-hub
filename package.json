@@ -2,6 +2,7 @@
   "name": "mcp-hub",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "An open-source control plane for discovering, validating, testing, monitoring and governing MCP servers.",
   "license": "MIT",
   "packageManager": "pnpm@11.17.0",
@@ -32,6 +33,9 @@
     "turbo": "^2.11.4",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.70.1",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.2",
+    "@mcp-hub/api": "workspace:*",
+    "@mcp-hub/database": "workspace:*",
+    "@mcp-hub/config": "workspace:*"
   }
 }

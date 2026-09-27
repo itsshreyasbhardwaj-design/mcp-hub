@@ -79,3 +79,9 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, label: string): 
 export function assertNever(value: never, message = 'Unexpected value'): never {
   throw new Error(`${message}: ${JSON.stringify(value)}`);
 }
+
+/**
+ * Bumped whenever a validation rule is added, removed or changes severity, so
+ * that stored runs can be compared against the rule set that produced them.
+ */
+export const ruleCatalogueVersion = '2026.09.1';
