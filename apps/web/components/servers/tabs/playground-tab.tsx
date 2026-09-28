@@ -5,6 +5,16 @@ import { TerminalSquare } from 'lucide-react';
 import { Playground } from '@/components/servers/playground';
 
 export function PlaygroundTab({ detail, role }: { detail: ServerDetail; role: string }) {
+  if (role === 'viewer') {
+    return (
+      <EmptyState
+        icon={<TerminalSquare className="size-8" />}
+        title="Your role cannot execute tools"
+        description="Viewers have read-only access. Ask an administrator for the developer role to use the playground."
+      />
+    );
+  }
+
   if (!detail.latestVersion || detail.tools.length === 0) {
     return (
       <EmptyState
@@ -21,16 +31,6 @@ export function PlaygroundTab({ detail, role }: { detail: ServerDetail; role: st
         icon={<TerminalSquare className="size-8" />}
         title="Demo servers cannot be executed"
         description="This server is fictional. Its endpoint does not exist, so there is nothing to call. Use the local example servers to try the playground against real MCP traffic."
-      />
-    );
-  }
-
-  if (role === 'viewer') {
-    return (
-      <EmptyState
-        icon={<TerminalSquare className="size-8" />}
-        title="Your role cannot execute tools"
-        description="Viewers have read-only access. Ask an administrator for the developer role to use the playground."
       />
     );
   }
