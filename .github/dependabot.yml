@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # typescript-eslint 8.x supports TypeScript <6.1, so a major TypeScript
+      # bump breaks lint until the linter catches up. Minor and patch are fine.
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
     groups:
       # One PR per ecosystem keeps the review surface reasonable.
       dev-dependencies:
