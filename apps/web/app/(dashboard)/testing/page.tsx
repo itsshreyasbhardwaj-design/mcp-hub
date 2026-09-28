@@ -83,7 +83,11 @@ export default async function TestingPage({
           label="Last run"
           value={lastRun ? `${lastRun.passed}/${lastRun.total}` : '—'}
           tone={lastRun && lastRun.failed > 0 ? 'danger' : 'default'}
-          hint={lastRun ? `${formatRelative(lastRun.createdAt)} · ${formatDuration(lastRun.durationMs)}` : 'never run'}
+          hint={
+            lastRun
+              ? `${formatRelative(lastRun.createdAt)} · ${formatDuration(lastRun.durationMs)}`
+              : 'never run'
+          }
         />
         <MetricCard label="Validation runs" value={validations.length} hint="most recent 25" />
         <MetricCard

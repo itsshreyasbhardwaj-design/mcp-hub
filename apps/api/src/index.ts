@@ -23,7 +23,8 @@ async function readBody(req: IncomingMessage): Promise<Buffer> {
   for await (const chunk of req) {
     const buffer = Buffer.from(chunk as Buffer);
     total += buffer.byteLength;
-    if (total > 2 * 1024 * 1024) throw new HubError('PAYLOAD_TOO_LARGE', 'Request body exceeds 2 MiB.');
+    if (total > 2 * 1024 * 1024)
+      throw new HubError('PAYLOAD_TOO_LARGE', 'Request body exceeds 2 MiB.');
     chunks.push(buffer);
   }
   return Buffer.concat(chunks);

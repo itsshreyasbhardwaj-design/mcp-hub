@@ -33,9 +33,7 @@ export default async function ServersPage({
     {
       query: params.q ?? null,
       status: params.status ? [params.status as McpServerRecord['status']] : undefined,
-      healthStatus: params.health
-        ? [params.health as McpServerRecord['healthStatus']]
-        : undefined,
+      healthStatus: params.health ? [params.health as McpServerRecord['healthStatus']] : undefined,
       sort: 'updated',
     },
     { limit: 50, cursor: params.cursor },

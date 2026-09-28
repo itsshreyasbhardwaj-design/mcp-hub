@@ -1,10 +1,6 @@
 import { HubError, type HttpTransportConfig } from '@mcp-hub/core';
 import { assertUrlAllowed, type SsrfPolicy } from '@mcp-hub/security';
-import {
-  type JsonRpcMessage,
-  isJsonRpcResponse,
-  SUPPORTED_PROTOCOL_VERSION,
-} from '../protocol.js';
+import { type JsonRpcMessage, isJsonRpcResponse, SUPPORTED_PROTOCOL_VERSION } from '../protocol.js';
 import { type McpTransport, type TransportEvents, TransportClosedError } from '../transport.js';
 
 export interface HttpTransportOptions {
@@ -83,11 +79,9 @@ export class StreamableHttpTransport implements McpTransport {
 
       if (!response.ok) {
         const detail = await this.readCapped(response);
-        throw new HubError(
-          'UPSTREAM_ERROR',
-          `MCP server responded ${response.status}.`,
-          { details: { status: response.status, body: detail.slice(0, 500) } },
-        );
+        throw new HubError('UPSTREAM_ERROR', `MCP server responded ${response.status}.`, {
+          details: { status: response.status, body: detail.slice(0, 500) },
+        });
       }
 
       const contentType = response.headers.get('content-type') ?? '';

@@ -80,7 +80,9 @@ export const TEST_CASES: TestCaseDefinition[] = [
       const version = client.info?.protocolVersion;
       if (!version) return fail('No protocol version was negotiated.');
       if (!/^\d{4}-\d{2}-\d{2}$/.test(version)) {
-        return fail(`"${version}" is not an MCP protocol revision date.`, { protocolVersion: version });
+        return fail(`"${version}" is not an MCP protocol revision date.`, {
+          protocolVersion: version,
+        });
       }
       const known = ['2025-06-18', '2025-03-26', '2024-11-05'];
       return known.includes(version)
@@ -139,7 +141,8 @@ export const TEST_CASES: TestCaseDefinition[] = [
     title: 'tools/list succeeds when tools are advertised',
     rationale: 'Clients enumerate tools on connect; a failure here breaks every client.',
     run: async ({ client }) => {
-      if (!client.info?.capabilities?.['tools']) return skip('The server does not advertise tools.');
+      if (!client.info?.capabilities?.['tools'])
+        return skip('The server does not advertise tools.');
       const tools = await client.listTools();
       if (tools.length === 0) {
         return warn('tools/list returned an empty list although tools are advertised.');
@@ -159,7 +162,9 @@ export const TEST_CASES: TestCaseDefinition[] = [
       const resources = await client.listResources();
       return resources.length === 0
         ? warn('resources/list returned an empty list although resources are advertised.')
-        : ok(`Discovered ${resources.length} resource(s).`, { resources: resources.map((r) => r.uri) });
+        : ok(`Discovered ${resources.length} resource(s).`, {
+            resources: resources.map((r) => r.uri),
+          });
     },
   },
   {
@@ -263,7 +268,8 @@ export const TEST_CASES: TestCaseDefinition[] = [
         seen.add(tool.name);
         if (!/^[a-zA-Z][a-zA-Z0-9_-]{0,63}$/.test(tool.name)) malformed.push(tool.name);
       }
-      if (duplicates.length === 0 && malformed.length === 0) return ok('Names are unique and valid.');
+      if (duplicates.length === 0 && malformed.length === 0)
+        return ok('Names are unique and valid.');
       return fail(`${duplicates.length} duplicate(s), ${malformed.length} malformed name(s).`, {
         duplicates,
         malformed,
@@ -334,11 +340,13 @@ export const TEST_CASES: TestCaseDefinition[] = [
           [required[0] as string]: { __mcp_hub_invalid: true },
         });
         return result.isError
-          ? ok(`"${candidate.name}" rejected an argument of the wrong type.`, { tool: candidate.name })
-          : warn(
-              `"${candidate.name}" accepted an argument that violates its schema.`,
-              { tool: candidate.name, required },
-            );
+          ? ok(`"${candidate.name}" rejected an argument of the wrong type.`, {
+              tool: candidate.name,
+            })
+          : warn(`"${candidate.name}" accepted an argument that violates its schema.`, {
+              tool: candidate.name,
+              required,
+            });
       } catch {
         return ok(`"${candidate.name}" raised a protocol error for invalid arguments.`, {
           tool: candidate.name,
@@ -353,7 +361,8 @@ export const TEST_CASES: TestCaseDefinition[] = [
     rationale:
       'A capability surface that changes between calls makes caching, permissions and diffing unreliable.',
     run: async ({ client }) => {
-      if (!client.info?.capabilities?.['tools']) return skip('The server does not advertise tools.');
+      if (!client.info?.capabilities?.['tools'])
+        return skip('The server does not advertise tools.');
       const first = (await client.listTools()).map((t) => t.name).sort();
       const second = (await client.listTools()).map((t) => t.name).sort();
       if (first.join(',') === second.join(',')) {

@@ -56,7 +56,11 @@ export default async function VersionsPage() {
         <MetricCard label="Versions" value={rows.length} hint={`${servers.length} server(s)`} />
         <MetricCard label="Published" value={published} hint="immutable" />
         <MetricCard label="Drafts" value={drafts} hint="still editable" />
-        <MetricCard label="Deprecated" value={deprecated} tone={deprecated > 0 ? 'warning' : 'default'} />
+        <MetricCard
+          label="Deprecated"
+          value={deprecated}
+          tone={deprecated > 0 ? 'warning' : 'default'}
+        />
       </div>
 
       <div className="mt-3">

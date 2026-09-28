@@ -116,9 +116,7 @@ export default async function ActivityPage({
               key: 'result',
               header: 'Result',
               width: '100px',
-              render: (entry) => (
-                <Badge tone={RESULT_TONES[entry.result]}>{entry.result}</Badge>
-              ),
+              render: (entry) => <Badge tone={RESULT_TONES[entry.result]}>{entry.result}</Badge>,
             },
             {
               key: 'metadata',

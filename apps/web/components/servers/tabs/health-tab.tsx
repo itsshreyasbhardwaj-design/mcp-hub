@@ -19,13 +19,7 @@ import { getHealthOverview } from '@mcp-hub/api';
 import type { Session } from '@/lib/session';
 import { LatencyChart } from '@/components/charts';
 
-export async function HealthTab({
-  detail,
-  session,
-}: {
-  detail: ServerDetail;
-  session: Session;
-}) {
+export async function HealthTab({ detail, session }: { detail: ServerDetail; session: Session }) {
   const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const { summary, checks, incidents } = await getHealthOverview(
     session.app,
@@ -86,9 +80,21 @@ export async function HealthTab({
           }
           hint={`${summary.healthy} of ${summary.checks} checks healthy`}
         />
-        <MetricCard label="p95 latency" value={formatDuration(summary.p95LatencyMs)} hint={`average ${formatDuration(summary.avgLatencyMs)}`} />
-        <MetricCard label="Failures" value={summary.failing} tone={summary.failing > 0 ? 'danger' : 'default'} />
-        <MetricCard label="Timeouts" value={summary.timeouts} tone={summary.timeouts > 0 ? 'warning' : 'default'} />
+        <MetricCard
+          label="p95 latency"
+          value={formatDuration(summary.p95LatencyMs)}
+          hint={`average ${formatDuration(summary.avgLatencyMs)}`}
+        />
+        <MetricCard
+          label="Failures"
+          value={summary.failing}
+          tone={summary.failing > 0 ? 'danger' : 'default'}
+        />
+        <MetricCard
+          label="Timeouts"
+          value={summary.timeouts}
+          tone={summary.timeouts > 0 ? 'warning' : 'default'}
+        />
       </div>
 
       <Card>
@@ -115,13 +121,18 @@ export async function HealthTab({
                   <code className="font-mono text-[10px] text-fg-4">{incident.kind}</code>
                   <span className="ml-auto text-xs text-fg-4">
                     started {formatRelative(incident.startedAt)}
-                    {incident.resolvedAt ? ` · resolved ${formatRelative(incident.resolvedAt)}` : ''}
+                    {incident.resolvedAt
+                      ? ` · resolved ${formatRelative(incident.resolvedAt)}`
+                      : ''}
                   </span>
                 </div>
                 {incident.evidence.length > 0 ? (
                   <dl className="mt-2 grid gap-2 sm:grid-cols-3">
                     {incident.evidence.map((item) => (
-                      <div key={`${item.label}-${item.value}`} className="rounded border border-border bg-surface-2/50 px-2 py-1.5">
+                      <div
+                        key={`${item.label}-${item.value}`}
+                        className="rounded border border-border bg-surface-2/50 px-2 py-1.5"
+                      >
                         <dt className="text-[10px] uppercase tracking-wide text-fg-4">
                           {item.label}
                         </dt>
@@ -164,9 +175,7 @@ export async function HealthTab({
               header: 'Latency',
               align: 'right',
               width: '100px',
-              render: (check) => (
-                <span className="text-xs">{formatDuration(check.latencyMs)}</span>
-              ),
+              render: (check) => <span className="text-xs">{formatDuration(check.latencyMs)}</span>,
             },
             {
               key: 'tools',
@@ -191,9 +200,7 @@ export async function HealthTab({
           ]}
         />
         <div className="border-t border-border px-4 py-2">
-          <Note>
-            Showing the 50 most recent of {checks.length} checks in the last 7 days.
-          </Note>
+          <Note>Showing the 50 most recent of {checks.length} checks in the last 7 days.</Note>
         </div>
       </Card>
     </div>

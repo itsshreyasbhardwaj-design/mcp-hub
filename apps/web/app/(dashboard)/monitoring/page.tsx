@@ -76,8 +76,16 @@ export default async function MonitoringPage({
           tone="success"
           hint={`of ${servers.length} server(s)`}
         />
-        <MetricCard label="Degraded" value={healthCounts.degraded} tone={healthCounts.degraded > 0 ? 'warning' : 'default'} />
-        <MetricCard label="Failing" value={healthCounts.failing} tone={healthCounts.failing > 0 ? 'danger' : 'default'} />
+        <MetricCard
+          label="Degraded"
+          value={healthCounts.degraded}
+          tone={healthCounts.degraded > 0 ? 'warning' : 'default'}
+        />
+        <MetricCard
+          label="Failing"
+          value={healthCounts.failing}
+          tone={healthCounts.failing > 0 ? 'danger' : 'default'}
+        />
         <MetricCard
           label="Open incidents"
           value={open.length}
@@ -251,7 +259,9 @@ export default async function MonitoringPage({
               width: '130px',
               render: (row) => (
                 <span className="text-xs text-fg-4">
-                  {row.server.healthCheckedAt ? formatRelative(row.server.healthCheckedAt) : 'never'}
+                  {row.server.healthCheckedAt
+                    ? formatRelative(row.server.healthCheckedAt)
+                    : 'never'}
                 </span>
               ),
             },

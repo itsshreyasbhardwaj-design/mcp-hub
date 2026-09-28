@@ -79,7 +79,11 @@ export default async function AnalyticsPage({
         <Card>
           <CardHeader title="Requests" description="Invocations by outcome." />
           <CardBody>
-            <RequestsChart series={dashboard.series.requests} dense={range === '24h'} height={240} />
+            <RequestsChart
+              series={dashboard.series.requests}
+              dense={range === '24h'}
+              height={240}
+            />
           </CardBody>
         </Card>
         <Card>
@@ -154,9 +158,7 @@ export default async function AnalyticsPage({
                 header: 'Error rate',
                 align: 'right',
                 width: '110px',
-                render: (row) => (
-                  <span className="text-xs">{formatPercent(row.errorRate)}</span>
-                ),
+                render: (row) => <span className="text-xs">{formatPercent(row.errorRate)}</span>,
               },
               {
                 key: 'p95',

@@ -52,7 +52,9 @@ export function createHubMcpServer(options: HubMcpServerOptions): McpServer {
     structuredContent: value,
   });
 
-  const failure = (err: unknown): { content: Array<{ type: 'text'; text: string }>; isError: true } => ({
+  const failure = (
+    err: unknown,
+  ): { content: Array<{ type: 'text'; text: string }>; isError: true } => ({
     content: [
       {
         type: 'text',
@@ -74,7 +76,10 @@ export function createHubMcpServer(options: HubMcpServerOptions): McpServer {
       description:
         'Searches the registry for MCP servers by name, description, tags or documentation text.',
       inputSchema: {
-        query: z.string().min(1).describe('Free-text search, e.g. "postgres" or "browser automation"'),
+        query: z
+          .string()
+          .min(1)
+          .describe('Free-text search, e.g. "postgres" or "browser automation"'),
         limit: z.number().int().min(1).max(50).default(10).describe('Maximum results'),
       },
       annotations: { readOnlyHint: true, openWorldHint: false },
@@ -147,7 +152,10 @@ export function createHubMcpServer(options: HubMcpServerOptions): McpServer {
       description: 'Returns every tool a server version exposes, with its risk classification.',
       inputSchema: {
         server: z.string().min(1).describe('Server id or slug'),
-        version_id: z.string().optional().describe('Specific version; defaults to the recommended one'),
+        version_id: z
+          .string()
+          .optional()
+          .describe('Specific version; defaults to the recommended one'),
       },
       annotations: { readOnlyHint: true },
     },
@@ -190,7 +198,9 @@ export function createHubMcpServer(options: HubMcpServerOptions): McpServer {
         const tool = result.tools.find((candidate) => candidate.name === toolName);
         if (!tool) {
           return {
-            content: [{ type: 'text', text: `No tool named "${toolName}" on this server version.` }],
+            content: [
+              { type: 'text', text: `No tool named "${toolName}" on this server version.` },
+            ],
             isError: true,
           };
         }
@@ -217,7 +227,9 @@ export function createHubMcpServer(options: HubMcpServerOptions): McpServer {
       inputSchema: {
         query: z.string().min(1).describe('Tool name or capability, e.g. "create_issue"'),
         risk: z
-          .array(z.enum(['READ', 'WRITE', 'NETWORK', 'CREDENTIAL', 'DESTRUCTIVE', 'ADMIN', 'UNKNOWN']))
+          .array(
+            z.enum(['READ', 'WRITE', 'NETWORK', 'CREDENTIAL', 'DESTRUCTIVE', 'ADMIN', 'UNKNOWN']),
+          )
           .optional()
           .describe('Restrict to these risk classifications'),
         limit: z.number().int().min(1).max(50).default(20),

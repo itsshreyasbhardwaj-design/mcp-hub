@@ -26,10 +26,7 @@ export function VersionActions({
   const [error, setError] = useState<string | null>(null);
   const [compareWith, setCompareWith] = useState<string | null>(null);
 
-  async function act(
-    label: string,
-    call: () => Promise<unknown>,
-  ): Promise<void> {
+  async function act(label: string, call: () => Promise<unknown>): Promise<void> {
     setPending(label);
     setError(null);
     try {

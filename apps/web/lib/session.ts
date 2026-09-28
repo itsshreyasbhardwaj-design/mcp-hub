@@ -3,7 +3,12 @@ import { cache } from 'react';
 import { redirect } from 'next/navigation';
 import type { Principal } from '@mcp-hub/core';
 import { HubError } from '@mcp-hub/core';
-import { getContext, resolvePrincipal, type AppContext, type AuthenticatedUser } from '@mcp-hub/api';
+import {
+  getContext,
+  resolvePrincipal,
+  type AppContext,
+  type AuthenticatedUser,
+} from '@mcp-hub/api';
 
 export interface Session {
   app: AppContext;

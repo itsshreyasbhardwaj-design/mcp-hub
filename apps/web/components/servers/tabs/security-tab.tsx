@@ -14,13 +14,7 @@ import {
 import { ShieldCheck } from 'lucide-react';
 import type { Session } from '@/lib/session';
 
-export async function SecurityTab({
-  detail,
-  session,
-}: {
-  detail: ServerDetail;
-  session: Session;
-}) {
+export async function SecurityTab({ detail, session }: { detail: ServerDetail; session: Session }) {
   const [findings, validation] = await Promise.all([
     session.app.repositories.governance.listSecurityFindings(session.principal.organizationId, {
       serverId: detail.server.id,

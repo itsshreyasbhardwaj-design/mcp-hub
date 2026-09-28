@@ -16,13 +16,7 @@ import {
 import { describeTransport } from '@mcp-hub/security';
 import type { Session } from '@/lib/session';
 
-export async function OverviewTab({
-  detail,
-  session,
-}: {
-  detail: ServerDetail;
-  session: Session;
-}) {
+export async function OverviewTab({ detail, session }: { detail: ServerDetail; session: Session }) {
   const { server, latestVersion, tools } = detail;
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
@@ -52,9 +46,7 @@ export async function OverviewTab({
         <CardHeader title="About" />
         <CardBody className="space-y-4">
           <p className="text-sm leading-relaxed text-fg-2">
-            {server.description ?? (
-              <span className="text-fg-4">No description recorded.</span>
-            )}
+            {server.description ?? <span className="text-fg-4">No description recorded.</span>}
           </p>
           <dl className="grid gap-4 sm:grid-cols-3">
             <KeyValue label="Maintainer">{server.maintainer ?? '—'}</KeyValue>
@@ -105,11 +97,11 @@ export async function OverviewTab({
                 <KeyValue label="Protocol">
                   {latestVersion.protocolVersion ?? 'not discovered'}
                 </KeyValue>
-                <KeyValue label="Reported name">
-                  {latestVersion.serverInfo?.name ?? '—'}
-                </KeyValue>
+                <KeyValue label="Reported name">{latestVersion.serverInfo?.name ?? '—'}</KeyValue>
                 <KeyValue label="Discovered">
-                  {latestVersion.discoveredAt ? formatRelative(latestVersion.discoveredAt) : 'never'}
+                  {latestVersion.discoveredAt
+                    ? formatRelative(latestVersion.discoveredAt)
+                    : 'never'}
                 </KeyValue>
               </dl>
               {latestVersion.environment.length > 0 ? (
@@ -122,7 +114,9 @@ export async function OverviewTab({
                       <code
                         key={requirement.key}
                         className="rounded bg-surface-3 px-1.5 py-0.5 font-mono text-[11px] text-fg-2"
-                        title={requirement.secret ? 'Stored encrypted' : 'Plain configuration value'}
+                        title={
+                          requirement.secret ? 'Stored encrypted' : 'Plain configuration value'
+                        }
                       >
                         {requirement.key}
                         {requirement.secret ? ' 🔒' : ''}
@@ -143,7 +137,17 @@ export async function OverviewTab({
 
       <div className="space-y-3">
         <Card>
-          <CardHeader title="Health (24h)" action={<Link href={`/servers/${server.slug}?tab=health`} className="text-xs text-accent hover:underline">Details</Link>} />
+          <CardHeader
+            title="Health (24h)"
+            action={
+              <Link
+                href={`/servers/${server.slug}?tab=health`}
+                className="text-xs text-accent hover:underline"
+              >
+                Details
+              </Link>
+            }
+          />
           <CardBody>
             {health.checks === 0 ? (
               <Note>No health checks recorded in the last 24 hours.</Note>
@@ -185,7 +189,10 @@ export async function OverviewTab({
                   {validation.infoCount} note(s)
                 </p>
                 {validation.findings.slice(0, 3).map((finding) => (
-                  <div key={finding.id} className="rounded border border-border bg-surface-2/50 p-2">
+                  <div
+                    key={finding.id}
+                    className="rounded border border-border bg-surface-2/50 p-2"
+                  >
                     <div className="flex items-center gap-1.5">
                       <SeverityBadge severity={finding.severity} />
                       <code className="truncate font-mono text-[10px] text-fg-4">
@@ -223,7 +230,10 @@ export async function OverviewTab({
               <p className="text-xs text-fg-3">
                 <span className="font-medium text-danger">{findings.length}</span> open security
                 finding(s).{' '}
-                <Link href={`/servers/${server.slug}?tab=security`} className="text-accent hover:underline">
+                <Link
+                  href={`/servers/${server.slug}?tab=security`}
+                  className="text-accent hover:underline"
+                >
                   Review
                 </Link>
               </p>

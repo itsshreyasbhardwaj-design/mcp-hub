@@ -22,7 +22,11 @@ function slugify(value: string): string {
     .slice(0, 64);
 }
 
-export function RegisterServerForm({ stdioAllowed, allowedCommands, privateNetworkAllowed }: Props) {
+export function RegisterServerForm({
+  stdioAllowed,
+  allowedCommands,
+  privateNetworkAllowed,
+}: Props) {
   const router = useRouter();
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
@@ -59,7 +63,10 @@ export function RegisterServerForm({ stdioAllowed, allowedCommands, privateNetwo
         ? {
             kind: 'stdio' as const,
             command: command.trim(),
-            args: args.split('\n').map((a) => a.trim()).filter(Boolean),
+            args: args
+              .split('\n')
+              .map((a) => a.trim())
+              .filter(Boolean),
             envKeys: keys,
           }
         : { kind: 'streamable-http' as const, url: url.trim(), headerKeys: keys };
@@ -72,7 +79,10 @@ export function RegisterServerForm({ stdioAllowed, allowedCommands, privateNetwo
           slug: effectiveSlug,
           description: description.trim() || null,
           repositoryUrl: repositoryUrl.trim() || null,
-          tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+          tags: tags
+            .split(',')
+            .map((t) => t.trim())
+            .filter(Boolean),
           visibility,
           status: 'draft',
           healthIntervalSeconds: healthInterval ? Number.parseInt(healthInterval, 10) : null,

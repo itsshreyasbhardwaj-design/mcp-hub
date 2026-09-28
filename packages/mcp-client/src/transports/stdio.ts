@@ -57,7 +57,9 @@ export class StdioTransport implements McpTransport {
 
     child.on('error', (err) => {
       events.onError(
-        new HubError('UPSTREAM_ERROR', `Failed to launch MCP server: ${err.message}`, { cause: err }),
+        new HubError('UPSTREAM_ERROR', `Failed to launch MCP server: ${err.message}`, {
+          cause: err,
+        }),
       );
     });
     child.on('close', (code) => {

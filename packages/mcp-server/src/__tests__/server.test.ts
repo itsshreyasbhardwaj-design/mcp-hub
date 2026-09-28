@@ -170,10 +170,7 @@ describe('MCP Hub over MCP', () => {
       'demo-source-control',
     );
     if (!detail) throw new Error('missing demo server');
-    const versions = await app.repositories.registry.listVersions(
-      detail.organizationId,
-      detail.id,
-    );
+    const versions = await app.repositories.registry.listVersions(detail.organizationId, detail.id);
     const from = versions.find((v) => v.version === '1.3.0');
     const to = versions.find((v) => v.version === '1.4.0');
     if (!from || !to) throw new Error('missing demo versions');

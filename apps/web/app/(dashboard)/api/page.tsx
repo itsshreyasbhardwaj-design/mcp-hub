@@ -45,10 +45,7 @@ export default async function ApiPage() {
           <Card>
             <CardHeader title="TypeScript SDK" description="@mcp-hub/sdk" />
             <CardBody className="space-y-3">
-              <CodeBlock
-                language="bash"
-                code={`pnpm add @mcp-hub/sdk`}
-              />
+              <CodeBlock language="bash" code={`pnpm add @mcp-hub/sdk`} />
               <CodeBlock
                 language="typescript"
                 code={`import { MCPHub } from '@mcp-hub/sdk';
@@ -85,10 +82,7 @@ const result = await hub.tools.execute({
           </Card>
 
           <Card>
-            <CardHeader
-              title="MCP integration"
-              description="Query MCP Hub itself through MCP."
-            />
+            <CardHeader title="MCP integration" description="Query MCP Hub itself through MCP." />
             <CardBody className="space-y-3">
               <CodeBlock
                 language="json"
@@ -112,8 +106,8 @@ const result = await hub.tools.execute({
               <Note>
                 Every tool it exposes is read-only: search_servers, get_server, list_tools,
                 get_tool_schema, search_tools, validate_server, get_server_health and
-                get_version_changes. There is no execute, register or delete tool, and the server
-                is additionally bounded by the scopes of the key you give it.
+                get_version_changes. There is no execute, register or delete tool, and the server is
+                additionally bounded by the scopes of the key you give it.
               </Note>
             </CardBody>
           </Card>

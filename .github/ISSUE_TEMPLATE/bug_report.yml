@@ -1,0 +1,63 @@
+name: Bug report
+description: Something in MCP Hub does not work as documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file this. If the bug is a security
+        vulnerability, please do not open an issue — see SECURITY.md.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what occurred instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      placeholder: |
+        1. pnpm db:reset
+        2. Register a server with …
+        3. Click Discover
+    validations:
+      required: true
+
+  - type: input
+    id: request-id
+    attributes:
+      label: Request ID
+      description: >
+        Every API response carries an x-request-id header, and every error body
+        repeats it. It makes the failure findable in the logs.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Registry and discovery
+        - Validation
+        - Compatibility testing
+        - Permissions and approvals
+        - Health monitoring
+        - Analytics
+        - API or SDK
+        - MCP server
+        - Dashboard
+        - Setup and deployment
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Output of `node --version`, `pnpm --version`, and your OS.
+      render: shell
+    validations:
+      required: true

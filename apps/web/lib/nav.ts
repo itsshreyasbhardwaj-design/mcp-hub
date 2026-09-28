@@ -16,25 +16,70 @@ export const NAVIGATION: NavSection[] = [
   {
     label: 'Registry',
     items: [
-      { href: '/', label: 'Overview', icon: 'LayoutDashboard', description: 'Fleet health and usage at a glance' },
-      { href: '/servers', label: 'Servers', icon: 'Server', description: 'Every registered MCP server' },
-      { href: '/discover', label: 'Discover', icon: 'Search', description: 'Search servers, tools, resources and prompts' },
-      { href: '/tools', label: 'Tools', icon: 'Wrench', description: 'Every tool, independent of its server' },
+      {
+        href: '/',
+        label: 'Overview',
+        icon: 'LayoutDashboard',
+        description: 'Fleet health and usage at a glance',
+      },
+      {
+        href: '/servers',
+        label: 'Servers',
+        icon: 'Server',
+        description: 'Every registered MCP server',
+      },
+      {
+        href: '/discover',
+        label: 'Discover',
+        icon: 'Search',
+        description: 'Search servers, tools, resources and prompts',
+      },
+      {
+        href: '/tools',
+        label: 'Tools',
+        icon: 'Wrench',
+        description: 'Every tool, independent of its server',
+      },
     ],
   },
   {
     label: 'Operate',
     items: [
-      { href: '/testing', label: 'Testing', icon: 'FlaskConical', description: 'Validation and compatibility runs' },
-      { href: '/monitoring', label: 'Monitoring', icon: 'Activity', description: 'Health checks, uptime and incidents' },
-      { href: '/versions', label: 'Versions', icon: 'GitCompareArrows', description: 'Publish and compare versions' },
+      {
+        href: '/testing',
+        label: 'Testing',
+        icon: 'FlaskConical',
+        description: 'Validation and compatibility runs',
+      },
+      {
+        href: '/monitoring',
+        label: 'Monitoring',
+        icon: 'Activity',
+        description: 'Health checks, uptime and incidents',
+      },
+      {
+        href: '/versions',
+        label: 'Versions',
+        icon: 'GitCompareArrows',
+        description: 'Publish and compare versions',
+      },
     ],
   },
   {
     label: 'Govern',
     items: [
-      { href: '/security', label: 'Security', icon: 'ShieldAlert', description: 'Permissions, approvals and findings' },
-      { href: '/analytics', label: 'Analytics', icon: 'ChartLine', description: 'Usage derived from recorded events' },
+      {
+        href: '/security',
+        label: 'Security',
+        icon: 'ShieldAlert',
+        description: 'Permissions, approvals and findings',
+      },
+      {
+        href: '/analytics',
+        label: 'Analytics',
+        icon: 'ChartLine',
+        description: 'Usage derived from recorded events',
+      },
       { href: '/activity', label: 'Activity', icon: 'ScrollText', description: 'The audit log' },
     ],
   },
@@ -42,8 +87,18 @@ export const NAVIGATION: NavSection[] = [
     label: 'Settings',
     items: [
       { href: '/team', label: 'Team', icon: 'Users', description: 'Members, roles and teams' },
-      { href: '/settings', label: 'Settings', icon: 'Settings', description: 'Organization and deployment settings' },
-      { href: '/api', label: 'API', icon: 'KeyRound', description: 'API keys, SDK and MCP integration' },
+      {
+        href: '/settings',
+        label: 'Settings',
+        icon: 'Settings',
+        description: 'Organization and deployment settings',
+      },
+      {
+        href: '/api',
+        label: 'API',
+        icon: 'KeyRound',
+        description: 'API keys, SDK and MCP integration',
+      },
     ],
   },
 ];

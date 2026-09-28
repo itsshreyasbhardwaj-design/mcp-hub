@@ -47,7 +47,10 @@ export function ToolList({ tools, canOverride }: { tools: ToolRow[]; canOverride
               className="flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-surface-2"
             >
               <ChevronRight
-                className={cn('mt-0.5 size-4 shrink-0 text-fg-4 transition-transform', open && 'rotate-90')}
+                className={cn(
+                  'mt-0.5 size-4 shrink-0 text-fg-4 transition-transform',
+                  open && 'rotate-90',
+                )}
                 aria-hidden
               />
               <span className="min-w-0 flex-1">
@@ -57,7 +60,9 @@ export function ToolList({ tools, canOverride }: { tools: ToolRow[]; canOverride
                 </span>
                 <span className="mt-1 block text-xs leading-relaxed text-fg-3">
                   {tool.description ?? (
-                    <span className="text-warning">No description — clients and models rely on this.</span>
+                    <span className="text-warning">
+                      No description — clients and models rely on this.
+                    </span>
                   )}
                 </span>
               </span>

@@ -1,13 +1,5 @@
 import type { Metadata } from 'next';
-import {
-  Badge,
-  Card,
-  CardBody,
-  CardHeader,
-  KeyValue,
-  Note,
-  PageHeader,
-} from '@mcp-hub/ui';
+import { Badge, Card, CardBody, CardHeader, KeyValue, Note, PageHeader } from '@mcp-hub/ui';
 import { requireSession } from '@/lib/session';
 
 export const metadata: Metadata = { title: 'Settings' };
@@ -31,7 +23,11 @@ export default async function SettingsPage() {
       value: (
         <span className="flex items-center gap-2">
           <code className="font-mono text-xs">{db.kind}</code>
-          {db.kind === 'pglite' ? <Badge tone="info">embedded</Badge> : <Badge tone="success">managed</Badge>}
+          {db.kind === 'pglite' ? (
+            <Badge tone="info">embedded</Badge>
+          ) : (
+            <Badge tone="success">managed</Badge>
+          )}
         </span>
       ),
       note:

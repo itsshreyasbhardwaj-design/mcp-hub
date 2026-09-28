@@ -32,7 +32,10 @@ export function Sidebar({ organizationName, organizations, badges }: SidebarProp
   };
 
   const nav = (
-    <nav aria-label="Primary" className="flex flex-1 flex-col gap-5 overflow-y-auto px-3 py-4 scrollbar-thin">
+    <nav
+      aria-label="Primary"
+      className="flex flex-1 flex-col gap-5 overflow-y-auto px-3 py-4 scrollbar-thin"
+    >
       {NAVIGATION.map((section) => (
         <div key={section.label}>
           <p className="px-2 pb-1.5 text-[10px] font-semibold uppercase tracking-widest text-fg-4">
@@ -40,8 +43,7 @@ export function Sidebar({ organizationName, organizations, badges }: SidebarProp
           </p>
           <ul className="space-y-0.5">
             {section.items.map((item) => {
-              const active =
-                item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+              const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
               const count = badgeFor(item.href);
               return (
                 <li key={item.href}>
@@ -83,7 +85,11 @@ export function Sidebar({ organizationName, organizations, badges }: SidebarProp
         aria-controls="sidebar"
         className="fixed left-3 top-3 z-50 rounded-md border border-border bg-surface-2 p-2 text-fg-2 lg:hidden"
       >
-        {open ? <Icons.X className="size-4" aria-hidden /> : <Icons.Menu className="size-4" aria-hidden />}
+        {open ? (
+          <Icons.X className="size-4" aria-hidden />
+        ) : (
+          <Icons.Menu className="size-4" aria-hidden />
+        )}
         <span className="sr-only">{open ? 'Close navigation' : 'Open navigation'}</span>
       </button>
 
@@ -96,7 +102,14 @@ export function Sidebar({ organizationName, organizations, badges }: SidebarProp
       >
         <div className="flex h-14 items-center gap-2 border-b border-border px-4">
           <div className="grid size-7 shrink-0 place-items-center rounded-md bg-accent/15 text-accent">
-            <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+            <svg
+              viewBox="0 0 24 24"
+              className="size-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden
+            >
               <path d="M4 7h16M4 12h16M4 17h10" strokeLinecap="round" />
             </svg>
           </div>
@@ -112,9 +125,7 @@ export function Sidebar({ organizationName, organizations, badges }: SidebarProp
 
         <div className="border-t border-border px-3 py-3">
           {organizations.length > 1 ? (
-            <p className="mb-2 px-2 text-[11px] text-fg-4">
-              {organizations.length} organizations
-            </p>
+            <p className="mb-2 px-2 text-[11px] text-fg-4">{organizations.length} organizations</p>
           ) : null}
           <a
             href="https://github.com/itsshreyasbhardwaj-design/mcp-hub"

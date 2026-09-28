@@ -59,7 +59,10 @@ test('classifies tools and shows the schema', async ({ page }) => {
   const destructive = page.locator('li', { hasText: 'delete_note' }).first();
   await expect(destructive.getByText('DESTRUCTIVE')).toBeVisible();
 
-  await page.getByRole('button', { name: /search_notes/ }).first().click();
+  await page
+    .getByRole('button', { name: /search_notes/ })
+    .first()
+    .click();
   await expect(page.getByText('Input schema')).toBeVisible();
   await expect(page.getByText('query', { exact: true }).first()).toBeVisible();
   await expect(page.getByText('required').first()).toBeVisible();
@@ -132,7 +135,9 @@ test('an administrator approves the exact payload and it then runs', async ({ pa
 
   // The requester cannot approve their own request.
   await page.goto('/security');
-  await expect(page.getByText('You requested this, so someone else has to decide it.')).toBeVisible();
+  await expect(
+    page.getByText('You requested this, so someone else has to decide it.'),
+  ).toBeVisible();
 
   await signIn(page, USERS.admin);
   await page.goto('/security');

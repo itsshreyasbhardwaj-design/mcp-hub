@@ -4,13 +4,7 @@ import { Card, EmptyState, Note } from '@mcp-hub/ui';
 import { Wrench } from 'lucide-react';
 import { ToolList } from '@/components/servers/tool-list';
 
-export function ToolsTab({
-  detail,
-  canOverride,
-}: {
-  detail: ServerDetail;
-  canOverride: boolean;
-}) {
+export function ToolsTab({ detail, canOverride }: { detail: ServerDetail; canOverride: boolean }) {
   if (detail.tools.length === 0) {
     return (
       <EmptyState

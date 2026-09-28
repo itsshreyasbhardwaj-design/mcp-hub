@@ -226,7 +226,10 @@ export default async function OverviewPage({
         </Card>
 
         <Card>
-          <CardHeader title="Failures by server" description="Errors and timeouts in this window." />
+          <CardHeader
+            title="Failures by server"
+            description="Errors and timeouts in this window."
+          />
           <CardBody>
             <FailuresChart rows={dashboard.failuresByServer} height={220} />
           </CardBody>
@@ -288,9 +291,7 @@ export default async function OverviewPage({
                   ) : null}
                 </span>
               </KeyValue>
-              <KeyValue label="Denied calls">
-                {formatNumber(metrics.invocations.denied)}
-              </KeyValue>
+              <KeyValue label="Denied calls">{formatNumber(metrics.invocations.denied)}</KeyValue>
               <KeyValue label="Validation runs">{formatNumber(metrics.validation.runs)}</KeyValue>
               <KeyValue label="Failing validations">
                 <span className={metrics.validation.failing > 0 ? 'text-warning' : ''}>

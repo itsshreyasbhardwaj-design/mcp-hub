@@ -52,7 +52,10 @@ export function RouteTable({ routes }: { routes: Route[] }) {
             header: 'Method',
             width: '90px',
             render: (route) => (
-              <Badge tone={METHOD_TONES[route.method] ?? 'neutral'} className="font-mono text-[10px]">
+              <Badge
+                tone={METHOD_TONES[route.method] ?? 'neutral'}
+                className="font-mono text-[10px]"
+              >
                 {route.method}
               </Badge>
             ),

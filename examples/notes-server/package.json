@@ -5,7 +5,9 @@
   "description": "A small but complete MCP server used to exercise MCP Hub end to end",
   "license": "MIT",
   "type": "module",
-  "bin": { "notes-server": "./dist/index.js" },
+  "bin": {
+    "notes-server": "./dist/index.js"
+  },
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc -b",

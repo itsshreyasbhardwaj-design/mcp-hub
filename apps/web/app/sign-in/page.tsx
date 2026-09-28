@@ -63,8 +63,8 @@ export default async function SignInPage() {
         <div className="rounded-lg border border-border bg-surface-1 p-4 text-sm text-fg-3">
           <p className="font-medium text-fg-2">This deployment uses Clerk.</p>
           <p className="mt-2 leading-relaxed">
-            Sign in through the Clerk flow configured for this installation. The development
-            sign-in is only available when{' '}
+            Sign in through the Clerk flow configured for this installation. The development sign-in
+            is only available when{' '}
             <code className="rounded bg-surface-3 px-1 py-0.5 font-mono text-xs">
               MCP_HUB_AUTH_PROVIDER=dev
             </code>

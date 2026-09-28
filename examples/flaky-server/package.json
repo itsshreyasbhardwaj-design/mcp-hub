@@ -5,7 +5,9 @@
   "description": "A deliberately unreliable MCP server for exercising health monitoring and incident detection",
   "license": "MIT",
   "type": "module",
-  "bin": { "flaky-server": "./dist/index.js" },
+  "bin": {
+    "flaky-server": "./dist/index.js"
+  },
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc -b",

@@ -35,7 +35,11 @@ interface ExecutionResult {
   durationMs: number;
   riskClass: RiskClass;
   decision: { effect: string; reason: string; source: string };
-  result: { content: Array<Record<string, unknown>>; structuredContent?: unknown; isError?: boolean } | null;
+  result: {
+    content: Array<Record<string, unknown>>;
+    structuredContent?: unknown;
+    isError?: boolean;
+  } | null;
   error: { code: string; message: string } | null;
   requestBytes: number;
   responseBytes: number;
@@ -144,7 +148,12 @@ export function Playground({
     try {
       await apiFetch('/api/v1/approvals', {
         method: 'POST',
-        body: { versionId, toolName: tool.name, arguments: parsedArgs, reason: 'Requested from the playground' },
+        body: {
+          versionId,
+          toolName: tool.name,
+          arguments: parsedArgs,
+          reason: 'Requested from the playground',
+        },
       });
       setApprovalState('requested');
     } catch (err) {
@@ -158,9 +167,7 @@ export function Playground({
         <CardHeader
           title="Request"
           description={`Version ${versionLabel}`}
-          action={
-            tool ? <RiskBadge risk={tool.riskClass} /> : null
-          }
+          action={tool ? <RiskBadge risk={tool.riskClass} /> : null}
         />
         <CardBody className="space-y-4">
           <div>
@@ -349,7 +356,9 @@ export function Playground({
                 </div>
                 <div>
                   <dt className="text-fg-4">Invocation</dt>
-                  <dd className="truncate font-mono text-[10px] text-fg-3">{result.invocationId}</dd>
+                  <dd className="truncate font-mono text-[10px] text-fg-3">
+                    {result.invocationId}
+                  </dd>
                 </div>
               </dl>
 

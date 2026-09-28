@@ -1,14 +1,7 @@
 import type { ReactNode } from 'react';
 import { cn } from './cn.js';
 
-export type BadgeTone =
-  | 'neutral'
-  | 'success'
-  | 'warning'
-  | 'danger'
-  | 'info'
-  | 'accent'
-  | 'muted';
+export type BadgeTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info' | 'accent' | 'muted';
 
 const TONES: Record<BadgeTone, string> = {
   neutral: 'bg-surface-3 text-fg-2 ring-border',
@@ -70,13 +63,7 @@ export function StatusBadge({ status, className }: { status: HealthStatus; class
 }
 
 export type RiskClass =
-  | 'READ'
-  | 'WRITE'
-  | 'NETWORK'
-  | 'CREDENTIAL'
-  | 'DESTRUCTIVE'
-  | 'ADMIN'
-  | 'UNKNOWN';
+  'READ' | 'WRITE' | 'NETWORK' | 'CREDENTIAL' | 'DESTRUCTIVE' | 'ADMIN' | 'UNKNOWN';
 
 const RISK_TONES: Record<RiskClass, BadgeTone> = {
   READ: 'success',
@@ -123,7 +110,8 @@ export function RiskBadge({
 export type Severity = 'error' | 'warning' | 'info';
 
 export function SeverityBadge({ severity }: { severity: Severity }) {
-  const tone: BadgeTone = severity === 'error' ? 'danger' : severity === 'warning' ? 'warning' : 'info';
+  const tone: BadgeTone =
+    severity === 'error' ? 'danger' : severity === 'warning' ? 'warning' : 'info';
   return (
     <Badge tone={tone} className="uppercase tracking-wide text-[10px]">
       {severity}

@@ -50,7 +50,10 @@ export function CreateVersionForm({ slug }: { slug: string }) {
                 ? {
                     kind: 'stdio' as const,
                     command,
-                    args: args.split('\n').map((a) => a.trim()).filter(Boolean),
+                    args: args
+                      .split('\n')
+                      .map((a) => a.trim())
+                      .filter(Boolean),
                     envKeys: [],
                   }
                 : { kind: 'streamable-http' as const, url, headerKeys: [] };

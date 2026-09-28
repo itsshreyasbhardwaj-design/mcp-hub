@@ -9,10 +9,7 @@ import {
   type AppContext,
 } from '@mcp-hub/api';
 
-export type JobHandler = (
-  context: AppContext,
-  job: JobRecord,
-) => Promise<Record<string, unknown>>;
+export type JobHandler = (context: AppContext, job: JobRecord) => Promise<Record<string, unknown>>;
 
 /**
  * Job handlers.
@@ -43,10 +40,7 @@ export const handlers: Record<string, JobHandler> = {
   'health.check': async (context, job) => {
     const serverId = job.payload['serverId'] as Id<'server'> | undefined;
     if (!serverId || !job.organizationId) return { skipped: 'missing serverId' };
-    const server = await context.repositories.registry.findServerById(
-      job.organizationId,
-      serverId,
-    );
+    const server = await context.repositories.registry.findServerById(job.organizationId, serverId);
     if (!server) return { skipped: 'server no longer exists' };
     if (server.isDemo) return { skipped: 'demo server' };
 

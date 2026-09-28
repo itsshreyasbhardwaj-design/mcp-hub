@@ -6,7 +6,9 @@
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
-  "bin": { "mcp-hub-api": "./dist/index.js" },
+  "bin": {
+    "mcp-hub-api": "./dist/index.js"
+  },
   "scripts": {
     "build": "tsc -b",
     "dev": "node --watch dist/index.js",

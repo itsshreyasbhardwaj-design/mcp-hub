@@ -89,10 +89,17 @@ async function runCase(
       Math.round(performance.now() - started),
     );
   } catch (err) {
-    contextLogger().debug('Compatibility case threw', { key: definition.key, error: errorMessage(err) });
+    contextLogger().debug('Compatibility case threw', {
+      key: definition.key,
+      error: errorMessage(err),
+    });
     return newCaseResult(
       definition,
-      { outcome: 'failed', message: errorMessage(err), evidence: { rationale: definition.rationale } },
+      {
+        outcome: 'failed',
+        message: errorMessage(err),
+        evidence: { rationale: definition.rationale },
+      },
       Math.round(performance.now() - started),
     );
   }

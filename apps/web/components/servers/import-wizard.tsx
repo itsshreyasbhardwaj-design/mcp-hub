@@ -11,7 +11,12 @@ interface Candidate {
   name: string;
   slug: string;
   transport: Record<string, unknown> & { kind: string };
-  environment: Array<{ key: string; description: string | null; required: boolean; secret: boolean }>;
+  environment: Array<{
+    key: string;
+    description: string | null;
+    required: boolean;
+    secret: boolean;
+  }>;
   summary: string;
   warnings: string[];
   alreadyRegistered: boolean;
@@ -189,7 +194,10 @@ export function ImportWizard({ stdioAllowed }: { stdioAllowed: boolean }) {
                         <span className="min-w-0 flex-1">
                           <span className="flex flex-wrap items-center gap-2">
                             <code className="font-mono text-sm text-fg-1">{candidate.slug}</code>
-                            <Badge tone={isStdio ? 'warning' : 'info'} className="font-mono text-[10px]">
+                            <Badge
+                              tone={isStdio ? 'warning' : 'info'}
+                              className="font-mono text-[10px]"
+                            >
                               {candidate.transport.kind}
                             </Badge>
                             {candidate.alreadyRegistered ? (
@@ -220,11 +228,19 @@ export function ImportWizard({ stdioAllowed }: { stdioAllowed: boolean }) {
                           {candidate.warnings.map((warning) => (
                             <li key={warning} className="flex items-start gap-1.5">
                               {warning.includes('local process') ? (
-                                <ShieldAlert className="mt-0.5 size-3 shrink-0 text-warning" aria-hidden />
+                                <ShieldAlert
+                                  className="mt-0.5 size-3 shrink-0 text-warning"
+                                  aria-hidden
+                                />
                               ) : (
-                                <AlertTriangle className="mt-0.5 size-3 shrink-0 text-warning" aria-hidden />
+                                <AlertTriangle
+                                  className="mt-0.5 size-3 shrink-0 text-warning"
+                                  aria-hidden
+                                />
                               )}
-                              <span className="text-[11px] leading-relaxed text-fg-3">{warning}</span>
+                              <span className="text-[11px] leading-relaxed text-fg-3">
+                                {warning}
+                              </span>
                             </li>
                           ))}
                         </ul>

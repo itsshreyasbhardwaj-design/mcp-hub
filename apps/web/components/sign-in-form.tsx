@@ -56,9 +56,7 @@ export function SignInForm({ users }: { users: SeededUser[] }) {
     <div className="space-y-4">
       <div className="rounded-lg border border-border bg-surface-1">
         <div className="border-b border-border px-4 py-2.5">
-          <p className="text-xs font-medium uppercase tracking-wide text-fg-4">
-            Seeded accounts
-          </p>
+          <p className="text-xs font-medium uppercase tracking-wide text-fg-4">Seeded accounts</p>
         </div>
         <ul className="divide-y divide-border">
           {users.map((user) => (

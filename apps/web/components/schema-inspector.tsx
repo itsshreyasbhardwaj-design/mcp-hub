@@ -190,7 +190,9 @@ export function exampleFor(schema: unknown, depth = 0): unknown {
     case 'object': {
       const out: Record<string, unknown> = {};
       const properties = (node['properties'] ?? {}) as Record<string, unknown>;
-      const required = new Set(Array.isArray(node['required']) ? (node['required'] as string[]) : []);
+      const required = new Set(
+        Array.isArray(node['required']) ? (node['required'] as string[]) : [],
+      );
       for (const [name, child] of Object.entries(properties)) {
         if (required.size > 0 && !required.has(name)) continue;
         out[name] = exampleFor(child, depth + 1);

@@ -122,12 +122,19 @@ export default async function ServerDetailPage({
 
       <div className="mt-4">
         {tab === 'overview' ? <OverviewTab detail={detail} session={session} /> : null}
-        {tab === 'tools' ? <ToolsTab detail={detail} canOverride={session.principal.role === 'admin' || session.principal.role === 'owner'} /> : null}
+        {tab === 'tools' ? (
+          <ToolsTab
+            detail={detail}
+            canOverride={session.principal.role === 'admin' || session.principal.role === 'owner'}
+          />
+        ) : null}
         {tab === 'capabilities' ? <CapabilitiesTab detail={detail} /> : null}
         {tab === 'versions' ? <VersionsTab detail={detail} canWrite={canWrite} /> : null}
         {tab === 'health' ? <HealthTab detail={detail} session={session} /> : null}
         {tab === 'security' ? <SecurityTab detail={detail} session={session} /> : null}
-        {tab === 'playground' ? <PlaygroundTab detail={detail} role={session.principal.role} /> : null}
+        {tab === 'playground' ? (
+          <PlaygroundTab detail={detail} role={session.principal.role} />
+        ) : null}
         {tab === 'config' ? <ConfigTab detail={detail} /> : null}
       </div>
     </>

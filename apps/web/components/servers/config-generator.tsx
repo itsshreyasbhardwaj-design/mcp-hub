@@ -95,7 +95,11 @@ export function ConfigGenerator({
                 }}
                 className="inline-flex items-center gap-1 rounded border border-border px-2 py-1 text-xs text-fg-3 hover:text-fg-1"
               >
-                {copied ? <Check className="size-3" aria-hidden /> : <Copy className="size-3" aria-hidden />}
+                {copied ? (
+                  <Check className="size-3" aria-hidden />
+                ) : (
+                  <Copy className="size-3" aria-hidden />
+                )}
                 {copied ? 'Copied' : 'Copy'}
               </button>
               <button

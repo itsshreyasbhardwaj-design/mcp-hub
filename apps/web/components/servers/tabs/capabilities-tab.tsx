@@ -39,9 +39,7 @@ export function CapabilitiesTab({ detail }: { detail: ServerDetail }) {
                     </Badge>
                   ) : null}
                 </div>
-                {resource.name ? (
-                  <p className="mt-1 text-xs text-fg-2">{resource.name}</p>
-                ) : null}
+                {resource.name ? <p className="mt-1 text-xs text-fg-2">{resource.name}</p> : null}
                 {resource.description ? (
                   <p className="mt-0.5 text-xs leading-relaxed text-fg-3">{resource.description}</p>
                 ) : null}

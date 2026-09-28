@@ -76,35 +76,45 @@ async function main(): Promise<void> {
 
       await Promise.all(
         jobs.map((job) =>
-          runWithContext({ route: `job:${job.kind}`, ...(job.organizationId ? { organizationId: job.organizationId } : {}) }, async () => {
-            const started = performance.now();
-            const handler = handlers[job.kind];
-            if (!handler) {
-              await context.repositories.jobs.fail(job.id, `No handler for "${job.kind}".`, 60_000);
-              return;
-            }
-            try {
-              const result = await handler(context, job);
-              await context.repositories.jobs.complete(job.id, result);
-              logger.info('Job completed', {
-                kind: job.kind,
-                durationMs: Math.round(performance.now() - started),
-                ...result,
-              });
-            } catch (err) {
-              const message = err instanceof Error ? err.message : String(err);
-              // Exponential backoff, capped, so a persistently broken server
-              // does not spin the worker.
-              const delay = Math.min(30_000 * 2 ** job.attempts, 15 * 60_000);
-              await context.repositories.jobs.fail(job.id, message, delay);
-              logger.warn('Job failed', {
-                kind: job.kind,
-                attempt: job.attempts,
-                retryInMs: delay,
-                error: message,
-              });
-            }
-          }),
+          runWithContext(
+            {
+              route: `job:${job.kind}`,
+              ...(job.organizationId ? { organizationId: job.organizationId } : {}),
+            },
+            async () => {
+              const started = performance.now();
+              const handler = handlers[job.kind];
+              if (!handler) {
+                await context.repositories.jobs.fail(
+                  job.id,
+                  `No handler for "${job.kind}".`,
+                  60_000,
+                );
+                return;
+              }
+              try {
+                const result = await handler(context, job);
+                await context.repositories.jobs.complete(job.id, result);
+                logger.info('Job completed', {
+                  kind: job.kind,
+                  durationMs: Math.round(performance.now() - started),
+                  ...result,
+                });
+              } catch (err) {
+                const message = err instanceof Error ? err.message : String(err);
+                // Exponential backoff, capped, so a persistently broken server
+                // does not spin the worker.
+                const delay = Math.min(30_000 * 2 ** job.attempts, 15 * 60_000);
+                await context.repositories.jobs.fail(job.id, message, delay);
+                logger.warn('Job failed', {
+                  kind: job.kind,
+                  attempt: job.attempts,
+                  retryInMs: delay,
+                  error: message,
+                });
+              }
+            },
+          ),
         ),
       );
     } catch (err) {

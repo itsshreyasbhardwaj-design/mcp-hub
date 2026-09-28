@@ -28,7 +28,11 @@ beforeAll(() => {
 
 const openClients: McpClient[] = [];
 afterEach(async () => {
-  while (openClients.length) await openClients.pop()?.close().catch(() => undefined);
+  while (openClients.length)
+    await openClients
+      .pop()
+      ?.close()
+      .catch(() => undefined);
 });
 
 describe('MCP client against a real server', () => {

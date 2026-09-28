@@ -58,7 +58,6 @@ function formatBucket(value: string, dense: boolean): string {
     : date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
 }
 
-
 /**
  * Recharts types its tooltip callbacks very loosely (values can be arrays or
  * undefined), so the adapters below narrow once instead of at each call site.
@@ -118,16 +117,49 @@ export function RequestsChart({
           </linearGradient>
         </defs>
         <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" vertical={false} />
-        <XAxis dataKey="bucket" tickFormatter={(value: string) => formatBucket(value, dense)} {...AXIS} minTickGap={32} />
-        <YAxis {...AXIS} width={44} tickFormatter={(value: number) => formatNumber(value)} allowDecimals={false} />
-        <Tooltip
-          contentStyle={TOOLTIP_STYLE}
-          labelFormatter={labelFormatter}
+        <XAxis
+          dataKey="bucket"
+          tickFormatter={(value: string) => formatBucket(value, dense)}
+          {...AXIS}
+          minTickGap={32}
         />
+        <YAxis
+          {...AXIS}
+          width={44}
+          tickFormatter={(value: number) => formatNumber(value)}
+          allowDecimals={false}
+        />
+        <Tooltip contentStyle={TOOLTIP_STYLE} labelFormatter={labelFormatter} />
         <Legend wrapperStyle={{ fontSize: 11, color: 'var(--color-fg-3)' }} />
-        <Area type="monotone" dataKey="succeeded" name="Succeeded" stackId="1" stroke="var(--color-success)" fill="url(#fill-success)" strokeWidth={1.5} />
-        <Area type="monotone" dataKey="failed" name="Failed" stackId="1" stroke="var(--color-danger)" fill="var(--color-danger)" fillOpacity={0.2} strokeWidth={1.5} />
-        <Area type="monotone" dataKey="denied" name="Denied" stackId="1" stroke="var(--color-warning)" fill="var(--color-warning)" fillOpacity={0.2} strokeWidth={1.5} />
+        <Area
+          type="monotone"
+          dataKey="succeeded"
+          name="Succeeded"
+          stackId="1"
+          stroke="var(--color-success)"
+          fill="url(#fill-success)"
+          strokeWidth={1.5}
+        />
+        <Area
+          type="monotone"
+          dataKey="failed"
+          name="Failed"
+          stackId="1"
+          stroke="var(--color-danger)"
+          fill="var(--color-danger)"
+          fillOpacity={0.2}
+          strokeWidth={1.5}
+        />
+        <Area
+          type="monotone"
+          dataKey="denied"
+          name="Denied"
+          stackId="1"
+          stroke="var(--color-warning)"
+          fill="var(--color-warning)"
+          fillOpacity={0.2}
+          strokeWidth={1.5}
+        />
       </AreaChart>
     </ResponsiveContainer>
   );
@@ -149,7 +181,12 @@ export function LatencyChart({
     <ResponsiveContainer width="100%" height={height}>
       <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -6 }}>
         <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" vertical={false} />
-        <XAxis dataKey="bucket" tickFormatter={(value: string) => formatBucket(value, dense)} {...AXIS} minTickGap={32} />
+        <XAxis
+          dataKey="bucket"
+          tickFormatter={(value: string) => formatBucket(value, dense)}
+          {...AXIS}
+          minTickGap={32}
+        />
         <YAxis {...AXIS} width={52} tickFormatter={(value: number) => formatDuration(value)} />
         <Tooltip
           contentStyle={TOOLTIP_STYLE}
@@ -157,8 +194,23 @@ export function LatencyChart({
           labelFormatter={labelFormatter}
         />
         <Legend wrapperStyle={{ fontSize: 11, color: 'var(--color-fg-3)' }} />
-        <Line type="monotone" dataKey="avgLatencyMs" name="Average" stroke="var(--color-accent)" strokeWidth={1.75} dot={false} />
-        <Line type="monotone" dataKey="p95LatencyMs" name="p95" stroke="var(--color-info)" strokeWidth={1.5} strokeDasharray="4 3" dot={false} />
+        <Line
+          type="monotone"
+          dataKey="avgLatencyMs"
+          name="Average"
+          stroke="var(--color-accent)"
+          strokeWidth={1.75}
+          dot={false}
+        />
+        <Line
+          type="monotone"
+          dataKey="p95LatencyMs"
+          name="p95"
+          stroke="var(--color-info)"
+          strokeWidth={1.5}
+          strokeDasharray="4 3"
+          dot={false}
+        />
       </LineChart>
     </ResponsiveContainer>
   );
@@ -180,12 +232,14 @@ export function HealthChart({
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -18 }}>
         <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" vertical={false} />
-        <XAxis dataKey="bucket" tickFormatter={(value: string) => formatBucket(value, dense)} {...AXIS} minTickGap={32} />
-        <YAxis {...AXIS} width={40} allowDecimals={false} />
-        <Tooltip
-          contentStyle={TOOLTIP_STYLE}
-          labelFormatter={labelFormatter}
+        <XAxis
+          dataKey="bucket"
+          tickFormatter={(value: string) => formatBucket(value, dense)}
+          {...AXIS}
+          minTickGap={32}
         />
+        <YAxis {...AXIS} width={40} allowDecimals={false} />
+        <Tooltip contentStyle={TOOLTIP_STYLE} labelFormatter={labelFormatter} />
         <Legend wrapperStyle={{ fontSize: 11, color: 'var(--color-fg-3)' }} />
         <Bar dataKey="healthy" name="Healthy" stackId="h" fill="var(--color-success)" />
         <Bar dataKey="degraded" name="Degraded" stackId="h" fill="var(--color-warning)" />
@@ -215,11 +269,14 @@ export function ToolUsageChart({
       <BarChart data={data} layout="vertical" margin={{ top: 4, right: 16, bottom: 4, left: 8 }}>
         <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" horizontal={false} />
         <XAxis type="number" {...AXIS} allowDecimals={false} />
-        <YAxis type="category" dataKey="name" width={140} {...AXIS} tick={{ fontSize: 11, fill: 'var(--color-fg-3)' }} />
-        <Tooltip
-          contentStyle={TOOLTIP_STYLE}
-          formatter={countFormatter}
+        <YAxis
+          type="category"
+          dataKey="name"
+          width={140}
+          {...AXIS}
+          tick={{ fontSize: 11, fill: 'var(--color-fg-3)' }}
         />
+        <Tooltip contentStyle={TOOLTIP_STYLE} formatter={countFormatter} />
         <Bar dataKey="calls" name="Calls" fill="var(--color-accent)" radius={[0, 3, 3, 0]} />
         <Bar dataKey="errors" name="Errors" fill="var(--color-danger)" radius={[0, 3, 3, 0]} />
       </BarChart>
@@ -247,13 +304,13 @@ export function FailuresChart({
         <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" vertical={false} />
         <XAxis dataKey="name" {...AXIS} interval={0} angle={-20} textAnchor="end" height={54} />
         <YAxis {...AXIS} width={40} allowDecimals={false} />
-        <Tooltip
-          contentStyle={TOOLTIP_STYLE}
-          formatter={failureFormatter}
-        />
+        <Tooltip contentStyle={TOOLTIP_STYLE} formatter={failureFormatter} />
         <Bar dataKey="failures" name="failures" radius={[3, 3, 0, 0]}>
           {data.map((row) => (
-            <Cell key={row.name} fill={row.rate > 25 ? 'var(--color-danger)' : 'var(--color-warning)'} />
+            <Cell
+              key={row.name}
+              fill={row.rate > 25 ? 'var(--color-danger)' : 'var(--color-warning)'}
+            />
           ))}
         </Bar>
       </BarChart>

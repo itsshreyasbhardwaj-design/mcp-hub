@@ -55,10 +55,11 @@ export function RunTestsPanel({
     setMessage(null);
     try {
       if (kind === 'validate') {
-        const result = await apiFetch<{ outcome: string; errorCount: number; warningCount: number }>(
-          `/api/v1/servers/${serverSlug}/validate`,
-          { method: 'POST' },
-        );
+        const result = await apiFetch<{
+          outcome: string;
+          errorCount: number;
+          warningCount: number;
+        }>(`/api/v1/servers/${serverSlug}/validate`, { method: 'POST' });
         setMessage({
           tone: result.outcome === 'error' ? 'error' : 'ok',
           text: `Validation ${result.outcome}: ${result.errorCount} error(s), ${result.warningCount} warning(s).`,
@@ -76,7 +77,10 @@ export function RunTestsPanel({
       }
       router.refresh();
     } catch (err) {
-      setMessage({ tone: 'error', text: err instanceof ApiError ? err.message : 'The run failed.' });
+      setMessage({
+        tone: 'error',
+        text: err instanceof ApiError ? err.message : 'The run failed.',
+      });
     } finally {
       setPending(null);
     }

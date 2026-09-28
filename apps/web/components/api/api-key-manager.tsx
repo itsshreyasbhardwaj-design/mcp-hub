@@ -3,15 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { AlertTriangle, Check, Copy, KeyRound, Plus } from 'lucide-react';
-import {
-  Badge,
-  Card,
-  CardBody,
-  CardHeader,
-  EmptyState,
-  Note,
-  formatRelative,
-} from '@mcp-hub/ui';
+import { Badge, Card, CardBody, CardHeader, EmptyState, Note, formatRelative } from '@mcp-hub/ui';
 import { ApiError, apiFetch } from '@/lib/api';
 
 interface KeyView {
@@ -109,7 +101,11 @@ export function ApiKeyManager({ canManage, keys }: { canManage: boolean; keys: K
                     }}
                     className="inline-flex shrink-0 items-center gap-1 rounded border border-border px-2 py-1.5 text-xs text-fg-2"
                   >
-                    {copied ? <Check className="size-3" aria-hidden /> : <Copy className="size-3" aria-hidden />}
+                    {copied ? (
+                      <Check className="size-3" aria-hidden />
+                    ) : (
+                      <Copy className="size-3" aria-hidden />
+                    )}
                     {copied ? 'Copied' : 'Copy'}
                   </button>
                 </div>

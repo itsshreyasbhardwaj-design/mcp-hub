@@ -140,7 +140,10 @@ export function VersionDiffDialog({
                   <div className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0">
                       {KIND_ICONS[change.kind] ?? (
-                        <span className="block size-3.5 rounded-full border border-border" aria-hidden />
+                        <span
+                          className="block size-3.5 rounded-full border border-border"
+                          aria-hidden
+                        />
                       )}
                     </span>
                     <div className="min-w-0 flex-1">

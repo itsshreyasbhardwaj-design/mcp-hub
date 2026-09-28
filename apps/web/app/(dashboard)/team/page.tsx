@@ -51,7 +51,11 @@ export default async function TeamPage() {
               rows={members}
               rowKey={(row) => row.membership.id}
               empty={
-                <EmptyState className="border-0" icon={<Users className="size-8" />} title="No members" />
+                <EmptyState
+                  className="border-0"
+                  icon={<Users className="size-8" />}
+                  title="No members"
+                />
               }
               columns={[
                 {

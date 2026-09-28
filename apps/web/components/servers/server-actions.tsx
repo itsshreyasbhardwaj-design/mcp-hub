@@ -38,19 +38,21 @@ export function ServerActions({ serverSlug, versionId, published, isDemo }: Prop
     setMessage(null);
     try {
       if (action === 'discover') {
-        const result = await apiFetch<{ toolCount: number; resourceCount: number; promptCount: number }>(
-          `/api/v1/versions/${versionId}/discover`,
-          { method: 'POST', body: {} },
-        );
+        const result = await apiFetch<{
+          toolCount: number;
+          resourceCount: number;
+          promptCount: number;
+        }>(`/api/v1/versions/${versionId}/discover`, { method: 'POST', body: {} });
         setMessage({
           tone: 'ok',
           text: `Discovered ${result.toolCount} tool(s), ${result.resourceCount} resource(s), ${result.promptCount} prompt(s).`,
         });
       } else if (action === 'validate') {
-        const result = await apiFetch<{ outcome: string; errorCount: number; warningCount: number }>(
-          `/api/v1/servers/${serverSlug}/validate`,
-          { method: 'POST' },
-        );
+        const result = await apiFetch<{
+          outcome: string;
+          errorCount: number;
+          warningCount: number;
+        }>(`/api/v1/servers/${serverSlug}/validate`, { method: 'POST' });
         setMessage({
           tone: result.outcome === 'error' ? 'error' : 'ok',
           text: `Validation ${result.outcome}: ${result.errorCount} error(s), ${result.warningCount} warning(s).`,
@@ -87,7 +89,12 @@ export function ServerActions({ serverSlug, versionId, published, isDemo }: Prop
     }
   }
 
-  const buttons: Array<{ action: Action; icon: React.ReactNode; disabled?: boolean; title?: string }> = [
+  const buttons: Array<{
+    action: Action;
+    icon: React.ReactNode;
+    disabled?: boolean;
+    title?: string;
+  }> = [
     {
       action: 'discover',
       icon: <RefreshCw className="size-3.5" aria-hidden />,
@@ -98,12 +105,18 @@ export function ServerActions({ serverSlug, versionId, published, isDemo }: Prop
           ? 'Demo servers are fictional and cannot be connected to.'
           : 'Connect and record the tools, resources and prompts this server exposes.',
     },
-    { action: 'validate', icon: <ShieldCheck className="size-3.5" aria-hidden />, title: 'Run the validation rules against the stored metadata.' },
+    {
+      action: 'validate',
+      icon: <ShieldCheck className="size-3.5" aria-hidden />,
+      title: 'Run the validation rules against the stored metadata.',
+    },
     {
       action: 'test',
       icon: <Zap className="size-3.5" aria-hidden />,
       disabled: isDemo,
-      title: isDemo ? 'Demo servers cannot be connected to.' : 'Run the compatibility suites against the live server.',
+      title: isDemo
+        ? 'Demo servers cannot be connected to.'
+        : 'Run the compatibility suites against the live server.',
     },
     {
       action: 'health',

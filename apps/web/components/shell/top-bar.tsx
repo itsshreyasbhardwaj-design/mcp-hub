@@ -19,7 +19,8 @@ export function TopBar({ userName, userEmail, role, hasDemoData }: TopBarProps) 
   const [theme, setTheme] = useState<'dark' | 'light' | null>(null);
 
   function toggleTheme(): void {
-    const next = (document.documentElement.dataset['theme'] ?? 'dark') === 'dark' ? 'light' : 'dark';
+    const next =
+      (document.documentElement.dataset['theme'] ?? 'dark') === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset['theme'] = next;
     setTheme(next);
   }
@@ -45,7 +46,11 @@ export function TopBar({ userName, userEmail, role, hasDemoData }: TopBarProps) 
         onClick={toggleTheme}
         className="rounded-md p-2 text-fg-3 transition-colors hover:bg-surface-2 hover:text-fg-1"
       >
-        {theme === 'light' ? <Moon className="size-4" aria-hidden /> : <Sun className="size-4" aria-hidden />}
+        {theme === 'light' ? (
+          <Moon className="size-4" aria-hidden />
+        ) : (
+          <Sun className="size-4" aria-hidden />
+        )}
         <span className="sr-only">Switch to {theme === 'light' ? 'dark' : 'light'} theme</span>
       </button>
 

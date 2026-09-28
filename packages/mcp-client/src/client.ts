@@ -171,7 +171,10 @@ export class McpClient {
     const items: T[] = [];
     let cursor: string | undefined;
     for (let page = 0; page < maxPages; page += 1) {
-      const result = (await this.request(method, cursor ? { cursor } : {})) as Record<string, unknown>;
+      const result = (await this.request(method, cursor ? { cursor } : {})) as Record<
+        string,
+        unknown
+      >;
       const batch = result?.[key];
       if (Array.isArray(batch)) items.push(...(batch as T[]));
       const next = result?.['nextCursor'];
@@ -233,9 +236,13 @@ export class McpClient {
 
     if (response.error) {
       pending.reject(
-        new HubError('UPSTREAM_ERROR', `MCP server rejected ${pending.method}: ${response.error.message}`, {
-          details: { rpcCode: response.error.code, method: pending.method },
-        }),
+        new HubError(
+          'UPSTREAM_ERROR',
+          `MCP server rejected ${pending.method}: ${response.error.message}`,
+          {
+            details: { rpcCode: response.error.code, method: pending.method },
+          },
+        ),
       );
       return;
     }

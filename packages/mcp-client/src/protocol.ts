@@ -50,7 +50,7 @@ export function isJsonRpcResponse(value: unknown): value is JsonRpcResponse {
     value !== null &&
     (value as { jsonrpc?: unknown }).jsonrpc === JSONRPC_VERSION &&
     'id' in value &&
-    (('result' in value) || ('error' in value))
+    ('result' in value || 'error' in value)
   );
 }
 

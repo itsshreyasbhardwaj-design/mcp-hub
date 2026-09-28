@@ -65,9 +65,7 @@ export function PageHeader({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
           <h1 className="text-xl font-semibold tracking-tight text-fg-1">{title}</h1>
-          {description ? (
-            <p className="mt-1 max-w-3xl text-sm text-fg-3">{description}</p>
-          ) : null}
+          {description ? <p className="mt-1 max-w-3xl text-sm text-fg-3">{description}</p> : null}
         </div>
         {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
       </div>
@@ -95,7 +93,11 @@ export function EmptyState({
         className,
       )}
     >
-      {icon ? <div className="text-fg-4" aria-hidden>{icon}</div> : null}
+      {icon ? (
+        <div className="text-fg-4" aria-hidden>
+          {icon}
+        </div>
+      ) : null}
       <div>
         <p className="text-sm font-medium text-fg-2">{title}</p>
         {description ? (
@@ -113,9 +115,7 @@ export function Skeleton({ className }: { className?: string }) {
 
 /** Inline explanation used where a number needs its provenance stated. */
 export function Note({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <p className={cn('text-xs leading-relaxed text-fg-3', className)}>{children}</p>
-  );
+  return <p className={cn('text-xs leading-relaxed text-fg-3', className)}>{children}</p>;
 }
 
 export function Separator({ className }: { className?: string }) {

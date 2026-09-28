@@ -37,7 +37,11 @@ export function CodeBlock({
           }}
           className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] text-fg-4 hover:text-fg-1"
         >
-          {copied ? <Check className="size-3" aria-hidden /> : <Copy className="size-3" aria-hidden />}
+          {copied ? (
+            <Check className="size-3" aria-hidden />
+          ) : (
+            <Copy className="size-3" aria-hidden />
+          )}
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>

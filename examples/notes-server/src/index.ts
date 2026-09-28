@@ -129,7 +129,8 @@ server.registerTool(
   'sync_to_remote',
   {
     title: 'Sync to a remote endpoint',
-    description: 'Pretends to push the notebook to a remote HTTP endpoint. Performs no network I/O.',
+    description:
+      'Pretends to push the notebook to a remote HTTP endpoint. Performs no network I/O.',
     inputSchema: {
       url: z.string().url().describe('Destination endpoint'),
       api_key: z.string().optional().describe('Bearer credential for the destination'),
@@ -147,7 +148,11 @@ server.registerResource(
   { title: 'Whole notebook', description: 'Every note as JSON', mimeType: 'application/json' },
   async (uri) => ({
     contents: [
-      { uri: uri.href, mimeType: 'application/json', text: JSON.stringify([...notes.values()], null, 2) },
+      {
+        uri: uri.href,
+        mimeType: 'application/json',
+        text: JSON.stringify([...notes.values()], null, 2),
+      },
     ],
   }),
 );
@@ -165,7 +170,9 @@ server.registerPrompt(
         role: 'user',
         content: {
           type: 'text',
-          text: `Summarise these notes${style ? ` in a ${style} style` : ''}:\n\n${[...notes.values()]
+          text: `Summarise these notes${style ? ` in a ${style} style` : ''}:\n\n${[
+            ...notes.values(),
+          ]
             .map((n) => `- ${n.title}: ${n.body}`)
             .join('\n')}`,
         },

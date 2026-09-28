@@ -20,10 +20,7 @@ export default async function DiscoverPage({
         title="Discover"
         description="Search across server names, descriptions, tool names, schemas, resources and prompts."
       />
-      <DiscoverSearch
-        initialQuery={q ?? ''}
-        fuzzyAvailable={session.app.db.capabilities.trigram}
-      />
+      <DiscoverSearch initialQuery={q ?? ''} fuzzyAvailable={session.app.db.capabilities.trigram} />
     </>
   );
 }

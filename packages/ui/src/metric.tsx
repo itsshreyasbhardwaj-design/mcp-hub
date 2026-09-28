@@ -19,14 +19,27 @@ const VALUE_TONES = {
   danger: 'text-danger',
 } as const;
 
-export function MetricCard({ label, value, hint, tone = 'default', icon, className }: MetricCardProps) {
+export function MetricCard({
+  label,
+  value,
+  hint,
+  tone = 'default',
+  icon,
+  className,
+}: MetricCardProps) {
   return (
     <div className={cn('rounded-lg border border-border bg-surface-1 p-4', className)}>
       <div className="flex items-center justify-between gap-2">
         <p className="text-xs font-medium uppercase tracking-wide text-fg-4">{label}</p>
-        {icon ? <span className="text-fg-4" aria-hidden>{icon}</span> : null}
+        {icon ? (
+          <span className="text-fg-4" aria-hidden>
+            {icon}
+          </span>
+        ) : null}
       </div>
-      <p className={cn('mt-2 text-2xl font-semibold tabular-nums tracking-tight', VALUE_TONES[tone])}>
+      <p
+        className={cn('mt-2 text-2xl font-semibold tabular-nums tracking-tight', VALUE_TONES[tone])}
+      >
         {typeof value === 'number' ? formatNumber(value) : (value ?? '—')}
       </p>
       {hint ? <div className="mt-1 text-xs text-fg-3">{hint}</div> : null}

@@ -306,9 +306,7 @@ export function PermissionRules({
           {
             key: 'description',
             header: 'Why',
-            render: (rule) => (
-              <span className="text-xs text-fg-3">{rule.description ?? '—'}</span>
-            ),
+            render: (rule) => <span className="text-xs text-fg-3">{rule.description ?? '—'}</span>,
           },
           {
             key: 'actions',

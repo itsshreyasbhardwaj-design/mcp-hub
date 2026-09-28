@@ -18,7 +18,9 @@ const command = process.argv[2] ?? 'migrate';
 async function main(): Promise<void> {
   const config = getConfig();
   const driver = await connect({ migrate: false });
-  console.log(`→ database: ${driver.kind}${driver.kind === 'pglite' ? ` (${config.database.embeddedPath})` : ''}`);
+  console.log(
+    `→ database: ${driver.kind}${driver.kind === 'pglite' ? ` (${config.database.embeddedPath})` : ''}`,
+  );
 
   try {
     if (command === 'reset') {
