@@ -186,7 +186,10 @@ export interface SafeFetchResult {
  * manually so that every hop is re-validated, the body is size-capped, and the
  * whole exchange is time-bounded.
  */
-export async function safeFetch(rawUrl: string, options: SafeFetchOptions): Promise<SafeFetchResult> {
+export async function safeFetch(
+  rawUrl: string,
+  options: SafeFetchOptions,
+): Promise<SafeFetchResult> {
   const maxRedirects = options.policy.maxRedirects ?? 3;
   let currentUrl = rawUrl;
   const controller = new AbortController();
@@ -195,7 +198,13 @@ export async function safeFetch(rawUrl: string, options: SafeFetchOptions): Prom
   try {
     for (let hop = 0; hop <= maxRedirects; hop += 1) {
       const checked = await assertUrlAllowed(currentUrl, options.policy, options.resolver);
-      const { policy: _policy, timeoutMs: _timeoutMs, maxBytes, resolver: _resolver, ...init } = options;
+      const {
+        policy: _policy,
+        timeoutMs: _timeoutMs,
+        maxBytes,
+        resolver: _resolver,
+        ...init
+      } = options;
 
       const response = await globalThis.fetch(checked.url, {
         ...init,

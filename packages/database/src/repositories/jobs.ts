@@ -126,7 +126,10 @@ export class JobRepository {
     );
   }
 
-  async listRecent(limit: number, organizationId?: Id<'organization'> | null): Promise<JobRecord[]> {
+  async listRecent(
+    limit: number,
+    organizationId?: Id<'organization'> | null,
+  ): Promise<JobRecord[]> {
     const { rows } = organizationId
       ? await this.db.query(
           'select * from jobs where organization_id = $1 order by created_at desc limit $2',

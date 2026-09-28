@@ -209,7 +209,9 @@ export const RULES: ValidationRule[] = [
       if (!version) return;
       const declared = new Set(version.environment.map((e) => e.key));
       const referenced =
-        version.transport.kind === 'stdio' ? version.transport.envKeys : version.transport.headerKeys;
+        version.transport.kind === 'stdio'
+          ? version.transport.envKeys
+          : version.transport.headerKeys;
       for (const key of referenced) {
         if (!declared.has(key)) {
           report({
@@ -557,7 +559,11 @@ export const RULES: ValidationRule[] = [
     title: 'Server exposes nothing',
     severity: 'warning',
     run: ({ target, report }) => {
-      if (target.tools.length === 0 && target.resources.length === 0 && target.prompts.length === 0) {
+      if (
+        target.tools.length === 0 &&
+        target.resources.length === 0 &&
+        target.prompts.length === 0
+      ) {
         report({
           severity: 'warning',
           rule: 'surface.empty',

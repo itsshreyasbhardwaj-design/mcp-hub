@@ -120,10 +120,7 @@ function selectMembership(
   return first;
 }
 
-async function resolveApiKey(
-  context: AppContext,
-  request: AuthRequest,
-): Promise<Principal | null> {
+async function resolveApiKey(context: AppContext, request: AuthRequest): Promise<Principal | null> {
   const header = request.headers.get('authorization');
   const raw = header?.toLowerCase().startsWith('bearer ')
     ? header.slice(7).trim()
@@ -157,9 +154,7 @@ const ROLE_RANK: Record<OrgRole, number> = { viewer: 0, developer: 1, admin: 2, 
 
 export function requireRole(principal: Principal, role: OrgRole): void {
   if (ROLE_RANK[principal.role] < ROLE_RANK[role]) {
-    throw HubError.forbidden(
-      `This action requires the ${role} role; you have ${principal.role}.`,
-    );
+    throw HubError.forbidden(`This action requires the ${role} role; you have ${principal.role}.`);
   }
 }
 
@@ -170,9 +165,7 @@ export function requireScope(principal: Principal, scope: ApiScope): void {
 
 export function requireUser(principal: Principal): Id<'user'> {
   if (!principal.userId) {
-    throw HubError.forbidden(
-      'This action must be performed by a signed-in user, not an API key.',
-    );
+    throw HubError.forbidden('This action must be performed by a signed-in user, not an API key.');
   }
   return principal.userId;
 }

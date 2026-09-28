@@ -1,9 +1,4 @@
-import {
-  type Id,
-  HubError,
-  normalizeLimit,
-  ruleCatalogueVersion,
-} from '@mcp-hub/core';
+import { type Id, HubError, normalizeLimit, ruleCatalogueVersion } from '@mcp-hub/core';
 import { resolveWindow } from '@mcp-hub/analytics';
 import { ruleCatalogue } from '@mcp-hub/validator';
 import { suiteCatalogue } from '@mcp-hub/testing';
@@ -289,10 +284,10 @@ export const routes: RouteDefinition[] = [
         param(request.params, 'server'),
       );
       return json({
-        findings: await app.repositories.governance.listSecurityFindings(
-          principal.organizationId,
-          { serverId: server.id, limit: 100 },
-        ),
+        findings: await app.repositories.governance.listSecurityFindings(principal.organizationId, {
+          serverId: server.id,
+          limit: 100,
+        }),
       });
     },
   },
@@ -503,8 +498,7 @@ export const routes: RouteDefinition[] = [
       });
       // A refusal is a 200 with a refusal body only for the playground's
       // benefit; API clients get the proper status code.
-      const status =
-        result.status === 'denied' ? 403 : result.status === 'blocked' ? 428 : 200;
+      const status = result.status === 'denied' ? 403 : result.status === 'blocked' ? 428 : 200;
       return json(result, status);
     },
   },
@@ -564,14 +558,22 @@ export const routes: RouteDefinition[] = [
     method: 'GET',
     path: '/api/v1/permissions',
     summary: 'List permission rules',
-    handler: async ({ app, principal }) => json({ rules: await services.listRules(app, principal) }),
+    handler: async ({ app, principal }) =>
+      json({ rules: await services.listRules(app, principal) }),
   },
   {
     method: 'POST',
     path: '/api/v1/permissions',
     summary: 'Create a permission rule',
     handler: async ({ app, principal, request }) =>
-      json(await services.createRule(app, principal, parse(schemas.permissionRuleSchema, request.body)), 201),
+      json(
+        await services.createRule(
+          app,
+          principal,
+          parse(schemas.permissionRuleSchema, request.body),
+        ),
+        201,
+      ),
   },
   {
     method: 'DELETE',
@@ -622,7 +624,11 @@ export const routes: RouteDefinition[] = [
     summary: 'Autocomplete suggestions',
     handler: async ({ app, principal, request }) =>
       json({
-        suggestions: await services.suggest(app, principal, request.url.searchParams.get('q') ?? ''),
+        suggestions: await services.suggest(
+          app,
+          principal,
+          request.url.searchParams.get('q') ?? '',
+        ),
       }),
   },
 
@@ -661,7 +667,8 @@ export const routes: RouteDefinition[] = [
         principal.organizationId,
         param(request.params, 'incident') as Id<'incident'>,
       );
-      if (!incident) throw HubError.notFound('That incident does not exist or is already resolved.');
+      if (!incident)
+        throw HubError.notFound('That incident does not exist or is already resolved.');
       await services.audit(app, principal, {
         action: 'incident.resolved',
         resourceType: 'incident',
@@ -732,7 +739,10 @@ export const routes: RouteDefinition[] = [
     path: '/api/v1/team/members',
     summary: 'Add a member to the organization',
     handler: async ({ app, principal, request }) =>
-      json(await services.addMember(app, principal, parse(schemas.memberSchema, request.body)), 201),
+      json(
+        await services.addMember(app, principal, parse(schemas.memberSchema, request.body)),
+        201,
+      ),
   },
   {
     method: 'PATCH',
@@ -785,7 +795,10 @@ export const routes: RouteDefinition[] = [
     handler: async ({ app, principal, request }) => {
       const input = parse(schemas.apiKeySchema, request.body);
       const created = await services.createApiKey(app, principal, input);
-      return json({ key: { ...created.record, hash: undefined }, plaintext: created.plaintext }, 201);
+      return json(
+        { key: { ...created.record, hash: undefined }, plaintext: created.plaintext },
+        201,
+      );
     },
   },
   {

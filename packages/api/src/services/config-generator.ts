@@ -65,7 +65,11 @@ export async function generateConfig(
         format: input.format,
         filename: 'claude_desktop_config.json',
         language: 'json',
-        content: JSON.stringify({ mcpServers: { [key]: entryFor(transport, placeholders) } }, null, 2),
+        content: JSON.stringify(
+          { mcpServers: { [key]: entryFor(transport, placeholders) } },
+          null,
+          2,
+        ),
         placeholders,
         notes: [
           ...notes,
@@ -86,7 +90,11 @@ export async function generateConfig(
         format: input.format,
         filename: 'mcp.json',
         language: 'json',
-        content: JSON.stringify({ mcpServers: { [key]: entryFor(transport, placeholders) } }, null, 2),
+        content: JSON.stringify(
+          { mcpServers: { [key]: entryFor(transport, placeholders) } },
+          null,
+          2,
+        ),
         placeholders,
         notes,
       };
@@ -154,9 +162,10 @@ function collectPlaceholders(
   version: ServerVersionRecord,
   transport: ServerVersionRecord['transport'],
 ): string[] {
-  const fromTransport =
-    transport.kind === 'stdio' ? transport.envKeys : transport.headerKeys;
-  const declared = version.environment.filter((req) => req.required || req.secret).map((req) => req.key);
+  const fromTransport = transport.kind === 'stdio' ? transport.envKeys : transport.headerKeys;
+  const declared = version.environment
+    .filter((req) => req.required || req.secret)
+    .map((req) => req.key);
   return [...new Set([...fromTransport, ...declared])];
 }
 

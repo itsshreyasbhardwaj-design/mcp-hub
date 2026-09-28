@@ -46,9 +46,13 @@ export async function assertTransportAllowed(
     }
     for (const arg of transport.args) {
       if (SHELL_METACHARACTERS.test(arg)) {
-        throw new HubError('TRANSPORT_BLOCKED', 'A command argument contains shell metacharacters.', {
-          details: { arg },
-        });
+        throw new HubError(
+          'TRANSPORT_BLOCKED',
+          'A command argument contains shell metacharacters.',
+          {
+            details: { arg },
+          },
+        );
       }
     }
     return;

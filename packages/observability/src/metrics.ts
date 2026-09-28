@@ -13,7 +13,10 @@ export async function timed<T>(
   const started = performance.now();
   try {
     const result = await fn();
-    contextLogger().debug(`${name} ok`, { ...fields, durationMs: Math.round(performance.now() - started) });
+    contextLogger().debug(`${name} ok`, {
+      ...fields,
+      durationMs: Math.round(performance.now() - started),
+    });
     return result;
   } catch (err) {
     contextLogger().warn(`${name} failed`, {

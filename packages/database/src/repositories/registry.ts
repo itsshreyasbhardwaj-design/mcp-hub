@@ -184,7 +184,8 @@ export class RegistryRepository {
     }
     if (sets.length === 0) {
       const existing = await this.findServerById(organizationId, serverId);
-      if (!existing) throw new HubError('SERVER_NOT_FOUND', 'The requested MCP server does not exist.');
+      if (!existing)
+        throw new HubError('SERVER_NOT_FOUND', 'The requested MCP server does not exist.');
       return existing;
     }
     sets.push('updated_at = now()');
@@ -304,7 +305,12 @@ export class RegistryRepository {
       data,
       nextCursor:
         hasMore && last
-          ? encodeCursor(sortColumn === 'name' ? last.name : last[sortColumn === 'created_at' ? 'createdAt' : 'updatedAt'], last.id)
+          ? encodeCursor(
+              sortColumn === 'name'
+                ? last.name
+                : last[sortColumn === 'created_at' ? 'createdAt' : 'updatedAt'],
+              last.id,
+            )
           : null,
       total: countRows[0]?.count ?? data.length,
     };
@@ -384,9 +390,13 @@ export class RegistryRepository {
       return toVersion(row);
     } catch (err) {
       if (isUniqueViolation(err)) {
-        throw new HubError('CONFLICT', `Version "${input.version}" already exists for this server.`, {
-          details: { version: input.version },
-        });
+        throw new HubError(
+          'CONFLICT',
+          `Version "${input.version}" already exists for this server.`,
+          {
+            details: { version: input.version },
+          },
+        );
       }
       throw err;
     }
@@ -555,10 +565,10 @@ export class RegistryRepository {
       'delete from server_resources where organization_id = $1 and version_id = $2',
       [organizationId, version.id],
     );
-    await this.db.query('delete from server_prompts where organization_id = $1 and version_id = $2', [
-      organizationId,
-      version.id,
-    ]);
+    await this.db.query(
+      'delete from server_prompts where organization_id = $1 and version_id = $2',
+      [organizationId, version.id],
+    );
 
     for (const tool of discovered.tools) {
       await this.db.query(
@@ -698,14 +708,19 @@ export class RegistryRepository {
       limit: number;
       offset: number;
     },
-  ): Promise<{ rows: Array<ToolRecord & { serverSlug: string; serverName: string; versionName: string }>; total: number }> {
+  ): Promise<{
+    rows: Array<ToolRecord & { serverSlug: string; serverName: string; versionName: string }>;
+    total: number;
+  }> {
     const params = new Params();
     const where = new WhereBuilder(params).eq('t.organization_id', organizationId);
     where.in('t.risk_class', options.riskClass);
     where.eq('t.server_id', options.serverId ?? undefined);
     if (options.query) {
       const q = params.add(`%${options.query.replace(/[\\%_]/g, (c) => `\\${c}`)}%`);
-      where.and(`(t.name ilike ${q} or coalesce(t.description, '') ilike ${q} or s.name ilike ${q})`);
+      where.and(
+        `(t.name ilike ${q} or coalesce(t.description, '') ilike ${q} or s.name ilike ${q})`,
+      );
     }
     if (options.preferredVersionsOnly) {
       where.and(
@@ -737,7 +752,9 @@ export class RegistryRepository {
     countWhere.eq('t.server_id', options.serverId ?? undefined);
     if (options.query) {
       const q = countParams.add(`%${options.query.replace(/[\\%_]/g, (c) => `\\${c}`)}%`);
-      countWhere.and(`(t.name ilike ${q} or coalesce(t.description, '') ilike ${q} or s.name ilike ${q})`);
+      countWhere.and(
+        `(t.name ilike ${q} or coalesce(t.description, '') ilike ${q} or s.name ilike ${q})`,
+      );
     }
     if (options.preferredVersionsOnly) {
       countWhere.and(

@@ -202,14 +202,16 @@ abstract class Resource {
 }
 
 export class ServersResource extends Resource {
-  list(options: {
-    cursor?: string;
-    limit?: number;
-    status?: T.ServerStatus[];
-    health?: T.HealthStatus[];
-    tag?: string;
-    q?: string;
-  } = {}): Promise<T.Page<T.McpServer>> {
+  list(
+    options: {
+      cursor?: string;
+      limit?: number;
+      status?: T.ServerStatus[];
+      health?: T.HealthStatus[];
+      tag?: string;
+      q?: string;
+    } = {},
+  ): Promise<T.Page<T.McpServer>> {
     return this.hub.request('GET', '/api/v1/servers', { query: { ...options } });
   }
 
@@ -231,15 +233,29 @@ export class ServersResource extends Resource {
     return this.hub.request('POST', '/api/v1/servers', { body: input });
   }
 
-  update(idOrSlug: string, patch: Partial<{ name: string; description: string; tags: string[]; status: T.ServerStatus; visibility: T.Visibility }>): Promise<T.McpServer> {
-    return this.hub.request('PATCH', `/api/v1/servers/${encodeURIComponent(idOrSlug)}`, { body: patch });
+  update(
+    idOrSlug: string,
+    patch: Partial<{
+      name: string;
+      description: string;
+      tags: string[];
+      status: T.ServerStatus;
+      visibility: T.Visibility;
+    }>,
+  ): Promise<T.McpServer> {
+    return this.hub.request('PATCH', `/api/v1/servers/${encodeURIComponent(idOrSlug)}`, {
+      body: patch,
+    });
   }
 
   delete(idOrSlug: string): Promise<void> {
     return this.hub.request('DELETE', `/api/v1/servers/${encodeURIComponent(idOrSlug)}`);
   }
 
-  listTools(idOrSlug: string, versionId?: string): Promise<{ version: T.ServerVersion | null; tools: T.Tool[] }> {
+  listTools(
+    idOrSlug: string,
+    versionId?: string,
+  ): Promise<{ version: T.ServerVersion | null; tools: T.Tool[] }> {
     return this.hub.request('GET', `/api/v1/servers/${encodeURIComponent(idOrSlug)}/tools`, {
       query: versionId ? { versionId } : {},
     });
@@ -251,7 +267,12 @@ export class ServersResource extends Resource {
 
   createVersion(
     idOrSlug: string,
-    input: { version: string; transport: T.Transport; environment?: T.EnvironmentRequirement[]; releaseNotes?: string },
+    input: {
+      version: string;
+      transport: T.Transport;
+      environment?: T.EnvironmentRequirement[];
+      releaseNotes?: string;
+    },
   ): Promise<T.ServerVersion> {
     return this.hub.request('POST', `/api/v1/servers/${encodeURIComponent(idOrSlug)}/versions`, {
       body: input,
@@ -269,19 +290,33 @@ export class ServersResource extends Resource {
 }
 
 export class VersionsResource extends Resource {
-  discover(versionId: string, environmentId?: string): Promise<{ toolCount: number; resourceCount: number; promptCount: number; protocolVersion: string | null }> {
+  discover(
+    versionId: string,
+    environmentId?: string,
+  ): Promise<{
+    toolCount: number;
+    resourceCount: number;
+    promptCount: number;
+    protocolVersion: string | null;
+  }> {
     return this.hub.request('POST', `/api/v1/versions/${versionId}/discover`, {
       body: { environmentId: environmentId ?? null },
     });
   }
 
-  publish(versionId: string, markRecommended = true): Promise<{ version: T.ServerVersion; diff: T.VersionDiff | null }> {
+  publish(
+    versionId: string,
+    markRecommended = true,
+  ): Promise<{ version: T.ServerVersion; diff: T.VersionDiff | null }> {
     return this.hub.request('POST', `/api/v1/versions/${versionId}/publish`, {
       body: { markRecommended },
     });
   }
 
-  update(versionId: string, flags: { deprecated?: boolean; recommended?: boolean }): Promise<T.ServerVersion> {
+  update(
+    versionId: string,
+    flags: { deprecated?: boolean; recommended?: boolean },
+  ): Promise<T.ServerVersion> {
     return this.hub.request('PATCH', `/api/v1/versions/${versionId}`, { body: flags });
   }
 
@@ -291,7 +326,15 @@ export class VersionsResource extends Resource {
 }
 
 export class ToolsResource extends Resource {
-  list(options: { q?: string; risk?: T.RiskClass[]; serverId?: string; limit?: number; offset?: number } = {}): Promise<{
+  list(
+    options: {
+      q?: string;
+      risk?: T.RiskClass[];
+      serverId?: string;
+      limit?: number;
+      offset?: number;
+    } = {},
+  ): Promise<{
     rows: Array<T.Tool & { serverSlug: string; serverName: string; version: string }>;
     total: number;
   }> {
@@ -322,44 +365,66 @@ export class ToolsResource extends Resource {
     return this.hub.request('POST', '/api/v1/tools/execute', { body: input, retryable: false });
   }
 
-  overrideRisk(toolId: string, input: { riskClass: T.RiskClass | null; reason: string }): Promise<void> {
+  overrideRisk(
+    toolId: string,
+    input: { riskClass: T.RiskClass | null; reason: string },
+  ): Promise<void> {
     return this.hub.request('POST', `/api/v1/tools/${toolId}/risk`, { body: input });
   }
 }
 
 export class ValidationResource extends Resource {
   run(serverIdOrSlug: string, versionId?: string): Promise<T.ValidationRun> {
-    return this.hub.request('POST', `/api/v1/servers/${encodeURIComponent(serverIdOrSlug)}/validate`, {
-      query: versionId ? { versionId } : {},
-    });
+    return this.hub.request(
+      'POST',
+      `/api/v1/servers/${encodeURIComponent(serverIdOrSlug)}/validate`,
+      {
+        query: versionId ? { versionId } : {},
+      },
+    );
   }
 
-  rules(): Promise<{ version: string; rules: Array<{ id: string; title: string; severity: T.Severity }> }> {
+  rules(): Promise<{
+    version: string;
+    rules: Array<{ id: string; title: string; severity: T.Severity }>;
+  }> {
     return this.hub.request('GET', '/api/v1/meta/rules');
   }
 }
 
 export class TestingResource extends Resource {
-  run(serverIdOrSlug: string, input: { versionId: string; suites?: string[]; environmentId?: string }): Promise<T.CompatibilityRun> {
+  run(
+    serverIdOrSlug: string,
+    input: { versionId: string; suites?: string[]; environmentId?: string },
+  ): Promise<T.CompatibilityRun> {
     return this.hub.request('POST', `/api/v1/servers/${encodeURIComponent(serverIdOrSlug)}/test`, {
       body: input,
       retryable: false,
     });
   }
 
-  catalogue(): Promise<{ cases: Array<{ suite: string; key: string; title: string; rationale: string }> }> {
+  catalogue(): Promise<{
+    cases: Array<{ suite: string; key: string; title: string; rationale: string }>;
+  }> {
     return this.hub.request('GET', '/api/v1/meta/suites');
   }
 }
 
 export class HealthResource extends Resource {
   check(serverIdOrSlug: string): Promise<{ status: T.HealthStatus; incidentsOpened: number }> {
-    return this.hub.request('POST', `/api/v1/servers/${encodeURIComponent(serverIdOrSlug)}/health-check`, {
-      retryable: false,
-    });
+    return this.hub.request(
+      'POST',
+      `/api/v1/servers/${encodeURIComponent(serverIdOrSlug)}/health-check`,
+      {
+        retryable: false,
+      },
+    );
   }
 
-  history(serverIdOrSlug: string, range: '24h' | '7d' | '30d' | '90d' = '24h'): Promise<{
+  history(
+    serverIdOrSlug: string,
+    range: '24h' | '7d' | '30d' | '90d' = '24h',
+  ): Promise<{
     summary: { checks: number; uptimePercent: number | null; p95LatencyMs: number | null };
     checks: Array<{ status: T.HealthStatus; latencyMs: number | null; checkedAt: string }>;
     incidents: T.Incident[];
@@ -369,25 +434,42 @@ export class HealthResource extends Resource {
     });
   }
 
-  incidents(status?: Array<'investigating' | 'ongoing' | 'resolved'>): Promise<{ incidents: T.Incident[] }> {
+  incidents(
+    status?: Array<'investigating' | 'ongoing' | 'resolved'>,
+  ): Promise<{ incidents: T.Incident[] }> {
     return this.hub.request('GET', '/api/v1/incidents', { query: { status } });
   }
 
-  status(): Promise<{ status: string; version: string; database: { driver: string; latencyMs: number } }> {
+  status(): Promise<{
+    status: string;
+    version: string;
+    database: { driver: string; latencyMs: number };
+  }> {
     return this.hub.request('GET', '/api/v1/health');
   }
 }
 
 export class ApprovalsResource extends Resource {
-  list(status?: Array<'pending' | 'approved' | 'denied' | 'expired' | 'consumed'>): Promise<{ approvals: T.Approval[] }> {
+  list(
+    status?: Array<'pending' | 'approved' | 'denied' | 'expired' | 'consumed'>,
+  ): Promise<{ approvals: T.Approval[] }> {
     return this.hub.request('GET', '/api/v1/approvals', { query: { status } });
   }
 
-  request(input: { versionId: string; toolName: string; arguments?: unknown; reason?: string }): Promise<T.Approval> {
+  request(input: {
+    versionId: string;
+    toolName: string;
+    arguments?: unknown;
+    reason?: string;
+  }): Promise<T.Approval> {
     return this.hub.request('POST', '/api/v1/approvals', { body: input, retryable: false });
   }
 
-  decide(approvalId: string, decision: 'approved' | 'denied', reason?: string): Promise<T.Approval> {
+  decide(
+    approvalId: string,
+    decision: 'approved' | 'denied',
+    reason?: string,
+  ): Promise<T.Approval> {
     return this.hub.request('POST', `/api/v1/approvals/${approvalId}/decision`, {
       body: { decision, reason: reason ?? null },
       retryable: false,
@@ -396,7 +478,16 @@ export class ApprovalsResource extends Resource {
 }
 
 export class PermissionsResource extends Resource {
-  list(): Promise<{ rules: Array<{ id: string; effect: T.PermissionEffect; toolName: string | null; riskClass: T.RiskClass | null; priority: number; description: string | null }> }> {
+  list(): Promise<{
+    rules: Array<{
+      id: string;
+      effect: T.PermissionEffect;
+      toolName: string | null;
+      riskClass: T.RiskClass | null;
+      priority: number;
+      description: string | null;
+    }>;
+  }> {
     return this.hub.request('GET', '/api/v1/permissions');
   }
 
@@ -423,23 +514,41 @@ export class AnalyticsResource extends Resource {
     return this.hub.request('GET', '/api/v1/analytics', { query: { range } });
   }
 
-  server(serverIdOrSlug: string, range: '24h' | '7d' | '30d' | '90d' = '7d'): Promise<Record<string, unknown>> {
-    return this.hub.request('GET', `/api/v1/servers/${encodeURIComponent(serverIdOrSlug)}/analytics`, {
-      query: { range },
-    });
+  server(
+    serverIdOrSlug: string,
+    range: '24h' | '7d' | '30d' | '90d' = '7d',
+  ): Promise<Record<string, unknown>> {
+    return this.hub.request(
+      'GET',
+      `/api/v1/servers/${encodeURIComponent(serverIdOrSlug)}/analytics`,
+      {
+        query: { range },
+      },
+    );
   }
 
-  activity(options: { cursor?: string; limit?: number; action?: string } = {}): Promise<T.Page<Record<string, unknown>>> {
+  activity(
+    options: { cursor?: string; limit?: number; action?: string } = {},
+  ): Promise<T.Page<Record<string, unknown>>> {
     return this.hub.request('GET', '/api/v1/activity', { query: { ...options } });
   }
 
-  invocations(options: { cursor?: string; limit?: number; serverId?: string; tool?: string } = {}): Promise<T.Page<Record<string, unknown>>> {
+  invocations(
+    options: { cursor?: string; limit?: number; serverId?: string; tool?: string } = {},
+  ): Promise<T.Page<Record<string, unknown>>> {
     return this.hub.request('GET', '/api/v1/invocations', { query: { ...options } });
   }
 }
 
 export class SearchResource extends Resource {
-  query(text: string, options: { type?: Array<'server' | 'tool' | 'resource' | 'prompt'>; limit?: number; offset?: number } = {}): Promise<T.Page<T.SearchHit> & { provider: string; fuzzyAvailable: boolean }> {
+  query(
+    text: string,
+    options: {
+      type?: Array<'server' | 'tool' | 'resource' | 'prompt'>;
+      limit?: number;
+      offset?: number;
+    } = {},
+  ): Promise<T.Page<T.SearchHit> & { provider: string; fuzzyAvailable: boolean }> {
     return this.hub.request('GET', '/api/v1/search', { query: { q: text, ...options } });
   }
 
@@ -449,12 +558,24 @@ export class SearchResource extends Resource {
 }
 
 export class ApiKeysResource extends Resource {
-  list(): Promise<{ keys: Array<{ id: string; name: string; prefix: string; scopes: string[]; lastUsedAt: string | null }> }> {
+  list(): Promise<{
+    keys: Array<{
+      id: string;
+      name: string;
+      prefix: string;
+      scopes: string[];
+      lastUsedAt: string | null;
+    }>;
+  }> {
     return this.hub.request('GET', '/api/v1/api-keys');
   }
 
   /** The plaintext key is returned exactly once and cannot be recovered. */
-  create(input: { name: string; scopes: string[]; expiresInDays?: number }): Promise<{ key: { id: string; prefix: string }; plaintext: string }> {
+  create(input: {
+    name: string;
+    scopes: string[];
+    expiresInDays?: number;
+  }): Promise<{ key: { id: string; prefix: string }; plaintext: string }> {
     return this.hub.request('POST', '/api/v1/api-keys', { body: input, retryable: false });
   }
 

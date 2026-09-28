@@ -8,7 +8,12 @@ import {
   HubError,
   effectiveRisk,
 } from '@mcp-hub/core';
-import { diffVersions, sortVersionsDescending, suggestedBump, type CapabilitySnapshot } from '@mcp-hub/versioning';
+import {
+  diffVersions,
+  sortVersionsDescending,
+  suggestedBump,
+  type CapabilitySnapshot,
+} from '@mcp-hub/versioning';
 import type { AppContext } from '../context.js';
 import { requireRole, requireScope } from '../auth/resolve.js';
 import { audit, emit } from './audit.js';

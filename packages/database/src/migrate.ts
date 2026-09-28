@@ -45,10 +45,11 @@ export async function runMigrations(driver: SqlDriver): Promise<MigrationResult>
 
     await driver.transaction(async (tx) => {
       await tx.exec(migration.sql);
-      await tx.query(
-        'insert into schema_migrations (id, name, checksum) values ($1, $2, $3)',
-        [migration.id, migration.name, checksum],
-      );
+      await tx.query('insert into schema_migrations (id, name, checksum) values ($1, $2, $3)', [
+        migration.id,
+        migration.name,
+        checksum,
+      ]);
     });
     result.applied.push(migration.id);
   }

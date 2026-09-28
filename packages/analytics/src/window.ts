@@ -58,7 +58,9 @@ export function resolveWindow(input: ResolveWindowInput = {}): TimeWindow & { ra
   }
   const span = RANGE_MS[range];
   if (span === undefined) {
-    throw HubError.badRequest(`Unknown range "${range}". Use 24h, 7d, 30d, 90d or a custom from/to.`);
+    throw HubError.badRequest(
+      `Unknown range "${range}". Use 24h, 7d, 30d, 90d or a custom from/to.`,
+    );
   }
   return {
     from: new Date(now.getTime() - span),

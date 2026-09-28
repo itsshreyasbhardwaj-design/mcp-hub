@@ -118,10 +118,18 @@ export function diffVersions(before: CapabilitySnapshot, after: CapabilitySnapsh
   };
 }
 
-function compareToolBodies(before: SnapshotTool, after: SnapshotTool, subject: string): VersionChange[] {
+function compareToolBodies(
+  before: SnapshotTool,
+  after: SnapshotTool,
+  subject: string,
+): VersionChange[] {
   const changes: VersionChange[] = [];
 
-  for (const schemaChange of diffSchemas(before.inputSchema, after.inputSchema, `tools.${subject}.inputSchema`)) {
+  for (const schemaChange of diffSchemas(
+    before.inputSchema,
+    after.inputSchema,
+    `tools.${subject}.inputSchema`,
+  )) {
     if (schemaChange.kind === 'description-changed') {
       changes.push({
         kind: 'description_changed',
@@ -291,9 +299,7 @@ function diffPrompts(before: CapabilitySnapshot, after: CapabilitySnapshot): Ver
       });
       continue;
     }
-    const beforeRequired = new Set(
-      previous.arguments.filter((a) => a.required).map((a) => a.name),
-    );
+    const beforeRequired = new Set(previous.arguments.filter((a) => a.required).map((a) => a.name));
     const afterRequired = new Set(prompt.arguments.filter((a) => a.required).map((a) => a.name));
     for (const argument of afterRequired) {
       if (beforeRequired.has(argument)) continue;
@@ -363,9 +369,11 @@ function diffCapabilities(before: CapabilitySnapshot, after: CapabilitySnapshot)
 export function summarizeDiff(diff: VersionDiff): string {
   const parts: string[] = [];
   if (diff.toolsAdded) parts.push(`+${diff.toolsAdded} tool${diff.toolsAdded === 1 ? '' : 's'}`);
-  if (diff.toolsRemoved) parts.push(`-${diff.toolsRemoved} tool${diff.toolsRemoved === 1 ? '' : 's'}`);
+  if (diff.toolsRemoved)
+    parts.push(`-${diff.toolsRemoved} tool${diff.toolsRemoved === 1 ? '' : 's'}`);
   if (diff.toolsRenamed) parts.push(`${diff.toolsRenamed} renamed`);
-  if (diff.schemasChanged) parts.push(`~${diff.schemasChanged} schema${diff.schemasChanged === 1 ? '' : 's'} changed`);
+  if (diff.schemasChanged)
+    parts.push(`~${diff.schemasChanged} schema${diff.schemasChanged === 1 ? '' : 's'} changed`);
   if (parts.length === 0) return 'No capability changes.';
   return parts.join(', ') + (diff.breakingChanges > 0 ? ` (${diff.breakingChanges} breaking)` : '');
 }

@@ -60,12 +60,19 @@ const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 /** Normalises arbitrary text into a registry slug. */
 export function toSlug(input: string): string {
-  return input
-    .normalize('NFKD')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 64);
+  return (
+    input
+      .normalize('NFKD')
+      // NFKD splits accented letters into a base plus a combining mark.
+      // Dropping the marks turns "Náme" into "name" rather than "na-me".
+      .replace(/\p{M}/gu, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 64)
+      // A trailing hyphen can reappear after slicing mid-word.
+      .replace(/-+$/, '')
+  );
 }
 
 export function isSlug(value: string): boolean {

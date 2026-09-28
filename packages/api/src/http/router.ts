@@ -39,7 +39,10 @@ export class Router {
     return this.routes.map(({ method, path, summary }) => ({ method, path, summary }));
   }
 
-  match(method: HttpMethod, pathname: string): { route: CompiledRoute; params: Record<string, string> } | null {
+  match(
+    method: HttpMethod,
+    pathname: string,
+  ): { route: CompiledRoute; params: Record<string, string> } | null {
     let pathMatched = false;
     for (const route of this.routes) {
       const match = route.regex.exec(pathname);

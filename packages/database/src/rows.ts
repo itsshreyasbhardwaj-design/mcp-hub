@@ -29,14 +29,10 @@ import type {
 
 type Row = Record<string, any>;
 
-const date = (value: unknown): Date =>
-  value instanceof Date ? value : new Date(String(value));
-const maybeDate = (value: unknown): Date | null =>
-  value == null ? null : date(value);
-const num = (value: unknown): number =>
-  typeof value === 'number' ? value : Number(value ?? 0);
-const maybeNum = (value: unknown): number | null =>
-  value == null ? null : num(value);
+const date = (value: unknown): Date => (value instanceof Date ? value : new Date(String(value)));
+const maybeDate = (value: unknown): Date | null => (value == null ? null : date(value));
+const num = (value: unknown): number => (typeof value === 'number' ? value : Number(value ?? 0));
+const maybeNum = (value: unknown): number | null => (value == null ? null : num(value));
 const arr = <T>(value: unknown): T[] => (Array.isArray(value) ? (value as T[]) : []);
 
 export const toOrganization = (r: Row): OrganizationRecord => ({

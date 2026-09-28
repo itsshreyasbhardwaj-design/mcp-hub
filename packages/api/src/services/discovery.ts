@@ -1,9 +1,4 @@
-import {
-  type Id,
-  type Principal,
-  type ServerVersionRecord,
-  HubError,
-} from '@mcp-hub/core';
+import { type Id, type Principal, type ServerVersionRecord, HubError } from '@mcp-hub/core';
 import { contextLogger } from '@mcp-hub/observability';
 import { withMcpSession } from '@mcp-hub/mcp-client';
 import { classifyTool, scanCapabilities, sanitizeExcerpt } from '@mcp-hub/security';
@@ -57,7 +52,12 @@ export async function discoverCapabilities(
     );
   }
 
-  const transport = await resolveTransport(context, principal.organizationId, version, options.environmentId ?? null);
+  const transport = await resolveTransport(
+    context,
+    principal.organizationId,
+    version,
+    options.environmentId ?? null,
+  );
   const secrets = await resolveSecrets(
     context,
     principal.organizationId,

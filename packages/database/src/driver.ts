@@ -12,7 +12,10 @@ export interface QueryResult<T> {
 }
 
 export interface SqlExecutor {
-  query<T = Record<string, unknown>>(text: string, params?: readonly unknown[]): Promise<QueryResult<T>>;
+  query<T = Record<string, unknown>>(
+    text: string,
+    params?: readonly unknown[],
+  ): Promise<QueryResult<T>>;
   /**
    * Runs a script that may contain several statements. Parameters are not
    * supported here by design — this path exists only for migrations, whose

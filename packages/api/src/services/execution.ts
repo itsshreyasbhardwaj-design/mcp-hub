@@ -11,8 +11,17 @@ import {
 } from '@mcp-hub/core';
 import { currentRequestId, redact } from '@mcp-hub/observability';
 import { withMcpSession, type CallToolResult } from '@mcp-hub/mcp-client';
-import { assertPayloadWithinLimit, assertStructureWithinLimits, byteLength } from '@mcp-hub/security';
-import { evaluate, evaluateApproval, hashArguments, type PermissionDecision } from '@mcp-hub/permissions';
+import {
+  assertPayloadWithinLimit,
+  assertStructureWithinLimits,
+  byteLength,
+} from '@mcp-hub/security';
+import {
+  evaluate,
+  evaluateApproval,
+  hashArguments,
+  type PermissionDecision,
+} from '@mcp-hub/permissions';
 import type { AppContext } from '../context.js';
 import { requireScope } from '../auth/resolve.js';
 import { audit, emit } from './audit.js';
@@ -78,7 +87,10 @@ export async function executeTool(
     input.toolName,
   );
   if (!tool) {
-    throw new HubError('TOOL_NOT_FOUND', `This version does not expose a tool named "${input.toolName}".`);
+    throw new HubError(
+      'TOOL_NOT_FOUND',
+      `This version does not expose a tool named "${input.toolName}".`,
+    );
   }
 
   const riskClass = effectiveRisk(tool);
@@ -136,7 +148,10 @@ export async function executeTool(
   let approval: ApprovalRecord | null = null;
   if (decision.effect === 'require_approval') {
     approval = input.approvalId
-      ? await context.repositories.governance.findApproval(principal.organizationId, input.approvalId)
+      ? await context.repositories.governance.findApproval(
+          principal.organizationId,
+          input.approvalId,
+        )
       : await context.repositories.governance.findUsableApproval({
           organizationId: principal.organizationId,
           versionId: version.id,

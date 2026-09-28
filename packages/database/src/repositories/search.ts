@@ -138,7 +138,9 @@ export class SearchRepository {
     scope.in('risk_class', options.riskClasses);
 
     const fuzzyScore = options.trigram ? `similarity(lower(title), lower(${q}))` : '0';
-    const fuzzyPredicate = options.trigram ? `similarity(lower(title), lower(${q})) > 0.3` : 'false';
+    const fuzzyPredicate = options.trigram
+      ? `similarity(lower(title), lower(${q})) > 0.3`
+      : 'false';
 
     const limitParam = params.add(options.limit);
     const offsetParam = params.add(options.offset);

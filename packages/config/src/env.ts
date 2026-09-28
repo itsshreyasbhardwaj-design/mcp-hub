@@ -111,7 +111,12 @@ export interface LoadConfigOptions {
  */
 export function loadConfig(options: LoadConfigOptions = {}): HubConfig {
   const env = options.env ?? process.env;
-  const nodeEnv = oneOf(env, 'NODE_ENV', ['development', 'test', 'production'] as const, 'development');
+  const nodeEnv = oneOf(
+    env,
+    'NODE_ENV',
+    ['development', 'test', 'production'] as const,
+    'development',
+  );
   const dataDir = str(env, 'MCP_HUB_DATA_DIR') ?? '.mcp-hub';
   const databaseUrl = str(env, 'DATABASE_URL');
 
@@ -129,7 +134,12 @@ export function loadConfig(options: LoadConfigOptions = {}): HubConfig {
     );
   }
 
-  const llmProvider = oneOf(env, 'MCP_HUB_LLM_PROVIDER', ['grounded', 'openrouter'] as const, 'grounded');
+  const llmProvider = oneOf(
+    env,
+    'MCP_HUB_LLM_PROVIDER',
+    ['grounded', 'openrouter'] as const,
+    'grounded',
+  );
   const openRouterApiKey = str(env, 'OPENROUTER_API_KEY');
   if (llmProvider === 'openrouter' && !openRouterApiKey) {
     throw HubError.badRequest('MCP_HUB_LLM_PROVIDER=openrouter requires OPENROUTER_API_KEY.');
@@ -160,7 +170,9 @@ export function loadConfig(options: LoadConfigOptions = {}): HubConfig {
     encryptionKeySource = 'generated-dev-key';
   }
 
-  const stdioCommands = (str(env, 'MCP_HUB_STDIO_ALLOWED_COMMANDS') ?? 'node,npx,python3,uvx,deno,bun')
+  const stdioCommands = (
+    str(env, 'MCP_HUB_STDIO_ALLOWED_COMMANDS') ?? 'node,npx,python3,uvx,deno,bun'
+  )
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean);

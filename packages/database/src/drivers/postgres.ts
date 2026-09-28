@@ -56,14 +56,13 @@ export async function createPostgresDriver(options: {
 
   await pool.query('select 1');
 
-  let trigram = false;
+  // Assigned on both branches below.
+  let trigram: boolean;
   try {
     await pool.query('create extension if not exists pg_trgm');
     trigram = true;
   } catch {
-    const probe = await pool.query(
-      "select 1 from pg_extension where extname = 'pg_trgm'",
-    );
+    const probe = await pool.query("select 1 from pg_extension where extname = 'pg_trgm'");
     trigram = probe.rows.length > 0;
   }
 

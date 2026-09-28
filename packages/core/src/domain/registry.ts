@@ -1,11 +1,5 @@
 import type { Id } from '../ids.js';
-import type {
-  HealthStatus,
-  RiskClass,
-  ServerStatus,
-  TransportKind,
-  Visibility,
-} from './enums.js';
+import type { HealthStatus, RiskClass, ServerStatus, TransportKind, Visibility } from './enums.js';
 
 /** A JSON Schema document as published by an MCP server. Never trusted. */
 export type JsonSchema = Record<string, unknown>;

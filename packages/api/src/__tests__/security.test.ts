@@ -239,11 +239,10 @@ describe('SSRF protection', () => {
       },
     });
     expect(created.status).toBe(201);
-    const response = await call(
-      'POST',
-      `/api/v1/versions/${bodyOf(created).versionId}/discover`,
-      { session: acme.session, body: {} },
-    );
+    const response = await call('POST', `/api/v1/versions/${bodyOf(created).versionId}/discover`, {
+      session: acme.session,
+      body: {},
+    });
     expect(response.status).toBe(400);
     expect(bodyOf(response).error.code).toBe('TRANSPORT_BLOCKED');
   });
@@ -264,11 +263,10 @@ describe('SSRF protection', () => {
         },
       },
     });
-    const response = await call(
-      'POST',
-      `/api/v1/versions/${bodyOf(created).versionId}/discover`,
-      { session: acme.session, body: {} },
-    );
+    const response = await call('POST', `/api/v1/versions/${bodyOf(created).versionId}/discover`, {
+      session: acme.session,
+      body: {},
+    });
     expect(bodyOf(response).error.code).toBe('TRANSPORT_BLOCKED');
   });
 
@@ -284,11 +282,10 @@ describe('SSRF protection', () => {
         },
       },
     });
-    const response = await call(
-      'POST',
-      `/api/v1/versions/${bodyOf(created).versionId}/discover`,
-      { session: acme.session, body: {} },
-    );
+    const response = await call('POST', `/api/v1/versions/${bodyOf(created).versionId}/discover`, {
+      session: acme.session,
+      body: {},
+    });
     expect(bodyOf(response).error.code).toBe('TRANSPORT_BLOCKED');
   });
 
@@ -337,7 +334,9 @@ describe('secret handling', () => {
   });
 
   it('redacts credential-shaped values in audit metadata', async () => {
-    const activity = bodyOf(await call('GET', '/api/v1/activity?limit=50', { session: acme.session }));
+    const activity = bodyOf(
+      await call('GET', '/api/v1/activity?limit=50', { session: acme.session }),
+    );
     expect(JSON.stringify(activity)).not.toContain('super-secret-value-12345');
   });
 });

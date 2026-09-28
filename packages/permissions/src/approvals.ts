@@ -1,4 +1,10 @@
-import { type ApprovalRecord, type RiskClass, HubError, stableStringify, sha256 } from '@mcp-hub/core';
+import {
+  type ApprovalRecord,
+  type RiskClass,
+  HubError,
+  stableStringify,
+  sha256,
+} from '@mcp-hub/core';
 
 /** Approvals expire so a stale grant cannot be replayed weeks later. */
 export const DEFAULT_APPROVAL_TTL_MS = 60 * 60 * 1000;
@@ -28,7 +34,11 @@ export function evaluateApproval(options: {
   now?: Date;
 }): ApprovalCheck {
   if (!options.required) {
-    return { status: 'not-required', approval: null, reason: 'The permission engine allowed this call.' };
+    return {
+      status: 'not-required',
+      approval: null,
+      reason: 'The permission engine allowed this call.',
+    };
   }
 
   const approval = options.approval;

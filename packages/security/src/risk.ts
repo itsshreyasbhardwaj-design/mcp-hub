@@ -1,8 +1,4 @@
-import {
-  type JsonSchema,
-  type RiskClass,
-  SENSITIVE_RISK_CLASSES,
-} from '@mcp-hub/core';
+import { type JsonSchema, type RiskClass, SENSITIVE_RISK_CLASSES } from '@mcp-hub/core';
 
 export interface RiskAssessment {
   riskClass: RiskClass;
@@ -43,33 +39,118 @@ interface Rule {
  */
 const RULES: Rule[] = [
   // ADMIN
-  { riskClass: 'ADMIN', label: 'administrative verb', name: /^(admin|grant|revoke|impersonate|sudo|escalate)[_-]?/i, weight: 10 },
-  { riskClass: 'ADMIN', label: 'permission management', text: /\b(iam|role[_ -]?binding|acl|permission|policy)\b.*\b(set|update|attach|grant)\b/i, weight: 8 },
-  { riskClass: 'ADMIN', label: 'user or account management', name: /(create|delete|update)[_-](user|account|member|org|organisation|organization)s?$/i, weight: 8 },
+  {
+    riskClass: 'ADMIN',
+    label: 'administrative verb',
+    name: /^(admin|grant|revoke|impersonate|sudo|escalate)[_-]?/i,
+    weight: 10,
+  },
+  {
+    riskClass: 'ADMIN',
+    label: 'permission management',
+    text: /\b(iam|role[_ -]?binding|acl|permission|policy)\b.*\b(set|update|attach|grant)\b/i,
+    weight: 8,
+  },
+  {
+    riskClass: 'ADMIN',
+    label: 'user or account management',
+    name: /(create|delete|update)[_-](user|account|member|org|organisation|organization)s?$/i,
+    weight: 8,
+  },
 
   // DESTRUCTIVE
-  { riskClass: 'DESTRUCTIVE', label: 'destructive verb in name', name: /^(delete|destroy|drop|remove|purge|truncate|wipe|erase|rm|unlink|terminate|kill|revert|reset|force[_-]push)[_-]?/i, weight: 10 },
-  { riskClass: 'DESTRUCTIVE', label: 'destructive verb anywhere in name', name: /[_-](delete|destroy|drop|purge|truncate|wipe)([_-]|$)/i, weight: 9 },
-  { riskClass: 'DESTRUCTIVE', label: 'irreversible language in description', text: /\b(permanently|irreversib\w+|cannot be undone|destructive|data loss)\b/i, weight: 7 },
-  { riskClass: 'DESTRUCTIVE', label: 'shell or code execution', name: /(exec|execute|eval|run[_-]?(command|shell|script|code)|spawn|shell)/i, weight: 9 },
+  {
+    riskClass: 'DESTRUCTIVE',
+    label: 'destructive verb in name',
+    name: /^(delete|destroy|drop|remove|purge|truncate|wipe|erase|rm|unlink|terminate|kill|revert|reset|force[_-]push)[_-]?/i,
+    weight: 10,
+  },
+  {
+    riskClass: 'DESTRUCTIVE',
+    label: 'destructive verb anywhere in name',
+    name: /[_-](delete|destroy|drop|purge|truncate|wipe)([_-]|$)/i,
+    weight: 9,
+  },
+  {
+    riskClass: 'DESTRUCTIVE',
+    label: 'irreversible language in description',
+    text: /\b(permanently|irreversib\w+|cannot be undone|destructive|data loss)\b/i,
+    weight: 7,
+  },
+  {
+    riskClass: 'DESTRUCTIVE',
+    label: 'shell or code execution',
+    name: /(exec|execute|eval|run[_-]?(command|shell|script|code)|spawn|shell)/i,
+    weight: 9,
+  },
 
   // CREDENTIAL
-  { riskClass: 'CREDENTIAL', label: 'credential in name', name: /(secret|credential|password|token|api[_-]?key|private[_-]?key|keychain|vault)/i, weight: 9 },
-  { riskClass: 'CREDENTIAL', label: 'credential in schema', text: /"(password|secret|token|api_?key|access_?key|private_?key|client_?secret)"/i, weight: 7 },
-  { riskClass: 'CREDENTIAL', label: 'authentication operation', text: /\b(authenticate|login|sign[_ -]?in|oauth|refresh token)\b/i, weight: 5 },
+  {
+    riskClass: 'CREDENTIAL',
+    label: 'credential in name',
+    name: /(secret|credential|password|token|api[_-]?key|private[_-]?key|keychain|vault)/i,
+    weight: 9,
+  },
+  {
+    riskClass: 'CREDENTIAL',
+    label: 'credential in schema',
+    text: /"(password|secret|token|api_?key|access_?key|private_?key|client_?secret)"/i,
+    weight: 7,
+  },
+  {
+    riskClass: 'CREDENTIAL',
+    label: 'authentication operation',
+    text: /\b(authenticate|login|sign[_ -]?in|oauth|refresh token)\b/i,
+    weight: 5,
+  },
 
   // NETWORK
-  { riskClass: 'NETWORK', label: 'outbound request verb', name: /^(fetch|http|request|curl|download|upload|post|webhook|browse|navigate|crawl|scrape)[_-]?/i, weight: 7 },
-  { riskClass: 'NETWORK', label: 'accepts a URL', text: /"(url|uri|endpoint|host|address|webhook_url)"/i, weight: 5 },
-  { riskClass: 'NETWORK', label: 'network language', text: /\b(http request|remote server|external api|send an? email|sms)\b/i, weight: 4 },
+  {
+    riskClass: 'NETWORK',
+    label: 'outbound request verb',
+    name: /^(fetch|http|request|curl|download|upload|post|webhook|browse|navigate|crawl|scrape)[_-]?/i,
+    weight: 7,
+  },
+  {
+    riskClass: 'NETWORK',
+    label: 'accepts a URL',
+    text: /"(url|uri|endpoint|host|address|webhook_url)"/i,
+    weight: 5,
+  },
+  {
+    riskClass: 'NETWORK',
+    label: 'network language',
+    text: /\b(http request|remote server|external api|send an? email|sms)\b/i,
+    weight: 4,
+  },
 
   // WRITE
-  { riskClass: 'WRITE', label: 'write verb in name', name: /^(create|write|update|set|put|patch|insert|add|append|edit|modify|upsert|rename|move|copy|merge|publish|post|send|comment|assign|close|open|apply|commit|push|deploy|install|configure)[_-]?/i, weight: 6 },
-  { riskClass: 'WRITE', label: 'mutation language', text: /\b(creates?|writes?|updates?|modif\w+|saves?|persists?)\b/i, weight: 3 },
+  {
+    riskClass: 'WRITE',
+    label: 'write verb in name',
+    name: /^(create|write|update|set|put|patch|insert|add|append|edit|modify|upsert|rename|move|copy|merge|publish|post|send|comment|assign|close|open|apply|commit|push|deploy|install|configure)[_-]?/i,
+    weight: 6,
+  },
+  {
+    riskClass: 'WRITE',
+    label: 'mutation language',
+    text: /\b(creates?|writes?|updates?|modif\w+|saves?|persists?)\b/i,
+    weight: 3,
+  },
 
   // READ
-  { riskClass: 'READ', label: 'read verb in name', name: /^(get|list|read|search|find|query|fetch[_-]?(info|status)|describe|show|inspect|view|check|count|stat|summar\w+|resolve|lookup|diff|compare)[_-]?/i, weight: 5 },
-  { riskClass: 'READ', label: 'read-only language', text: /\b(returns?|retrieves?|reads?|lists?|queries)\b/i, weight: 2 },
+  {
+    riskClass: 'READ',
+    label: 'read verb in name',
+    name: /^(get|list|read|search|find|query|fetch[_-]?(info|status)|describe|show|inspect|view|check|count|stat|summar\w+|resolve|lookup|diff|compare)[_-]?/i,
+    weight: 5,
+  },
+  {
+    riskClass: 'READ',
+    label: 'read-only language',
+    text: /\b(returns?|retrieves?|reads?|lists?|queries)\b/i,
+    weight: 2,
+  },
 ];
 
 const SEVERITY_ORDER: RiskClass[] = [
@@ -149,7 +230,9 @@ export function classifyTool(tool: ToolLike): RiskAssessment {
   }
 
   const total = [...scores.values()].reduce((a, b) => a + b, 0);
-  const matchedLabels = signals.filter((s) => s.startsWith(`${winner}:`)).map((s) => s.slice(winner.length + 2));
+  const matchedLabels = signals
+    .filter((s) => s.startsWith(`${winner}:`))
+    .map((s) => s.slice(winner.length + 2));
 
   return {
     riskClass: winner,

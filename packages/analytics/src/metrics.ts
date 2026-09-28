@@ -20,7 +20,12 @@ export interface DashboardData {
     health: SeriesSet;
   };
   topTools: ToolUsageRow[];
-  failuresByServer: Array<{ serverId: Id<'server'>; serverSlug: string; failures: number; total: number }>;
+  failuresByServer: Array<{
+    serverId: Id<'server'>;
+    serverSlug: string;
+    failures: number;
+    total: number;
+  }>;
   /** True when the organization has no events at all, so the UI shows an empty state. */
   isEmpty: boolean;
 }
@@ -41,20 +46,31 @@ export async function buildDashboard(
     analytics: AnalyticsRepository;
   },
 ): Promise<DashboardData> {
-  const [health, toolCount, toolsByRisk, invocations, openIncidents, findings, requestSeries, healthSeries, topTools, failures, validationRuns] =
-    await Promise.all([
-      repositories.registry.countServersByHealth(organizationId),
-      repositories.registry.countTools(organizationId),
-      repositories.registry.countToolsByRisk(organizationId),
-      repositories.analytics.invocationTotals(organizationId, window),
-      repositories.governance.countOpenIncidents(organizationId),
-      repositories.governance.countSecurityFindings(organizationId),
-      repositories.analytics.invocationSeries(organizationId, window),
-      repositories.analytics.healthSeries(organizationId, window),
-      repositories.analytics.topTools(organizationId, window, 8),
-      repositories.analytics.failuresByServer(organizationId, window, 8),
-      repositories.governance.listValidationRuns(organizationId, null, 50),
-    ]);
+  const [
+    health,
+    toolCount,
+    toolsByRisk,
+    invocations,
+    openIncidents,
+    findings,
+    requestSeries,
+    healthSeries,
+    topTools,
+    failures,
+    validationRuns,
+  ] = await Promise.all([
+    repositories.registry.countServersByHealth(organizationId),
+    repositories.registry.countTools(organizationId),
+    repositories.registry.countToolsByRisk(organizationId),
+    repositories.analytics.invocationTotals(organizationId, window),
+    repositories.governance.countOpenIncidents(organizationId),
+    repositories.governance.countSecurityFindings(organizationId),
+    repositories.analytics.invocationSeries(organizationId, window),
+    repositories.analytics.healthSeries(organizationId, window),
+    repositories.analytics.topTools(organizationId, window, 8),
+    repositories.analytics.failuresByServer(organizationId, window, 8),
+    repositories.governance.listValidationRuns(organizationId, null, 50),
+  ]);
 
   const totalServers = (Object.values(health) as number[]).reduce((a, b) => a + b, 0);
   const errorRate =
@@ -107,9 +123,7 @@ function densifySeries(series: SeriesSet, window: TimeWindow): SeriesSet {
 }
 
 /** Rolls a server's recent checks into the status shown on cards and lists. */
-export function deriveHealthStatus(
-  recent: ReadonlyArray<{ status: HealthStatus }>,
-): HealthStatus {
+export function deriveHealthStatus(recent: ReadonlyArray<{ status: HealthStatus }>): HealthStatus {
   if (recent.length === 0) return 'unknown';
   const [latest] = recent;
   if (!latest) return 'unknown';

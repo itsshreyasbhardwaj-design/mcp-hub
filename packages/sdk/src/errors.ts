@@ -58,7 +58,13 @@ export class PermissionError extends McpHubError {
     requestId?: string | null,
     details?: Record<string, unknown>,
   ) {
-    super({ code, message, status: 403, requestId: requestId ?? null, ...(details ? { details } : {}) });
+    super({
+      code,
+      message,
+      status: 403,
+      requestId: requestId ?? null,
+      ...(details ? { details } : {}),
+    });
     this.name = 'PermissionError';
   }
 }
@@ -82,7 +88,11 @@ export class NotFoundError extends McpHubError {
 
 export class ValidationError extends McpHubError {
   readonly issues: Array<{ path: string; message: string }>;
-  constructor(message: string, issues: Array<{ path: string; message: string }>, requestId?: string | null) {
+  constructor(
+    message: string,
+    issues: Array<{ path: string; message: string }>,
+    requestId?: string | null,
+  ) {
     super({ code: 'VALIDATION_FAILED', message, status: 422, requestId: requestId ?? null });
     this.name = 'ValidationError';
     this.issues = issues;
@@ -90,11 +100,20 @@ export class ValidationError extends McpHubError {
 }
 
 interface ApiErrorBody {
-  error?: { code?: string; message?: string; requestId?: string; details?: Record<string, unknown> };
+  error?: {
+    code?: string;
+    message?: string;
+    requestId?: string;
+    details?: Record<string, unknown>;
+  };
 }
 
 /** Maps an error response onto the most specific error class available. */
-export function errorFromResponse(status: number, body: unknown, requestId: string | null): McpHubError {
+export function errorFromResponse(
+  status: number,
+  body: unknown,
+  requestId: string | null,
+): McpHubError {
   const payload = (body ?? {}) as ApiErrorBody;
   const code = (payload.error?.code ?? 'INTERNAL') as McpHubErrorCode;
   const message = payload.error?.message ?? `The request failed with status ${status}.`;

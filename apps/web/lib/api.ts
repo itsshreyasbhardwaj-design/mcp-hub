@@ -35,6 +35,9 @@ export async function apiFetch<T>(
   path: string,
   options: { method?: string; body?: unknown; signal?: AbortSignal } = {},
 ): Promise<T> {
+  // This is browser code calling our own same-origin API; the restriction
+  // guards server-side egress, which is a different concern.
+  // eslint-disable-next-line no-restricted-globals
   const response = await fetch(path, {
     method: options.method ?? 'GET',
     headers: { 'content-type': 'application/json' },

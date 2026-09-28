@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Loader2, Search } from 'lucide-react';
 import { Badge, Card, EmptyState, Note, cn } from '@mcp-hub/ui';
@@ -36,7 +36,14 @@ const MATCH_LABELS: Record<Hit['matchKind'], string> = {
   fuzzy: 'fuzzy (trigram) match',
 };
 
-const EXAMPLES = ['database', 'github', 'postgres', 'filesystem', 'browser automation', 'monitoring'];
+const EXAMPLES = [
+  'database',
+  'github',
+  'postgres',
+  'filesystem',
+  'browser automation',
+  'monitoring',
+];
 
 export function DiscoverSearch({
   initialQuery,
@@ -45,7 +52,6 @@ export function DiscoverSearch({
   initialQuery: string;
   fuzzyAvailable: boolean;
 }) {
-  const router = useRouter();
   const params = useSearchParams();
   const [query, setQuery] = useState(initialQuery);
   const [types, setTypes] = useState<string[]>([]);
@@ -53,26 +59,23 @@ export function DiscoverSearch({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const run = useCallback(
-    async (term: string, selectedTypes: string[]): Promise<void> => {
-      if (term.trim().length < 2) {
-        setResponse(null);
-        return;
-      }
-      setLoading(true);
-      setError(null);
-      try {
-        const search = new URLSearchParams({ q: term, limit: '30' });
-        for (const type of selectedTypes) search.append('type', type);
-        setResponse(await apiFetch<SearchResponse>(`/api/v1/search?${search.toString()}`));
-      } catch (err) {
-        setError(err instanceof ApiError ? err.message : 'Search failed.');
-      } finally {
-        setLoading(false);
-      }
-    },
-    [],
-  );
+  const run = useCallback(async (term: string, selectedTypes: string[]): Promise<void> => {
+    if (term.trim().length < 2) {
+      setResponse(null);
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const search = new URLSearchParams({ q: term, limit: '30' });
+      for (const type of selectedTypes) search.append('type', type);
+      setResponse(await apiFetch<SearchResponse>(`/api/v1/search?${search.toString()}`));
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Search failed.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => void run(query, types), 200);
@@ -89,7 +92,10 @@ export function DiscoverSearch({
   return (
     <div className="space-y-4">
       <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-fg-4" aria-hidden />
+        <Search
+          className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-fg-4"
+          aria-hidden
+        />
         <input
           type="search"
           autoFocus
@@ -100,7 +106,10 @@ export function DiscoverSearch({
           className="w-full rounded-lg border border-border bg-surface-1 py-3 pl-10 pr-4 text-base text-fg-1 placeholder:text-fg-4"
         />
         {loading ? (
-          <Loader2 className="absolute right-3 top-1/2 size-4 -translate-y-1/2 animate-spin text-fg-4" aria-hidden />
+          <Loader2
+            className="absolute right-3 top-1/2 size-4 -translate-y-1/2 animate-spin text-fg-4"
+            aria-hidden
+          />
         ) : null}
       </div>
 
@@ -207,9 +216,7 @@ export function DiscoverSearch({
                       {MATCH_LABELS[hit.matchKind]}
                     </span>
                   </div>
-                  {hit.subtitle ? (
-                    <p className="mt-1 text-xs text-fg-3">{hit.subtitle}</p>
-                  ) : null}
+                  {hit.subtitle ? <p className="mt-1 text-xs text-fg-3">{hit.subtitle}</p> : null}
                   {hit.snippet ? (
                     <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-fg-3">
                       {hit.snippet}

@@ -408,7 +408,9 @@ describe('the full registration lifecycle against a live MCP server', () => {
   });
 
   it('records the whole lifecycle in the audit log', async () => {
-    const activity = bodyOf(await call('GET', '/api/v1/activity?limit=100', { as: 'admin@example.com' }));
+    const activity = bodyOf(
+      await call('GET', '/api/v1/activity?limit=100', { as: 'admin@example.com' }),
+    );
     const actions = new Set(activity.data.map((row: { action: string }) => row.action));
     for (const expected of [
       'server.registered',
@@ -519,7 +521,12 @@ describe('API keys', () => {
     expect(execution.status).toBe(403);
 
     const keyId = bodyOf(created).key.id;
-    expect((await call('DELETE', `/api/v1/api-keys/${keyId}`, { as: 'admin@example.com' })).status).toBe(204);
-    expect((await call('GET', '/api/v1/servers', { headers: { authorization: `Bearer ${plaintext}` } })).status).toBe(401);
+    expect(
+      (await call('DELETE', `/api/v1/api-keys/${keyId}`, { as: 'admin@example.com' })).status,
+    ).toBe(204);
+    expect(
+      (await call('GET', '/api/v1/servers', { headers: { authorization: `Bearer ${plaintext}` } }))
+        .status,
+    ).toBe(401);
   });
 });

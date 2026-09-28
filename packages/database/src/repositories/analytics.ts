@@ -86,7 +86,10 @@ export class AnalyticsRepository {
       value: row['value'] == null ? null : Number(row['value']),
       status: (row['status'] as string | null) ?? null,
       metadata: (row['metadata'] as Record<string, unknown>) ?? {},
-      occurredAt: row['occurred_at'] instanceof Date ? row['occurred_at'] : new Date(String(row['occurred_at'])),
+      occurredAt:
+        row['occurred_at'] instanceof Date
+          ? row['occurred_at']
+          : new Date(String(row['occurred_at'])),
     }));
   }
 
@@ -231,7 +234,9 @@ export class AnalyticsRepository {
     organizationId: Id<'organization'>,
     window: TimeWindow,
     limit: number,
-  ): Promise<Array<{ serverId: Id<'server'>; serverSlug: string; failures: number; total: number }>> {
+  ): Promise<
+    Array<{ serverId: Id<'server'>; serverSlug: string; failures: number; total: number }>
+  > {
     const { rows } = await this.db.query<{
       server_id: string;
       slug: string;
@@ -259,10 +264,7 @@ export class AnalyticsRepository {
   }
 
   /** Health status over time, used by the fleet health chart. */
-  async healthSeries(
-    organizationId: Id<'organization'>,
-    window: TimeWindow,
-  ): Promise<SeriesSet> {
+  async healthSeries(organizationId: Id<'organization'>, window: TimeWindow): Promise<SeriesSet> {
     const { rows } = await this.db.query<{
       bucket: Date;
       healthy: number;

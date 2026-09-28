@@ -1,4 +1,10 @@
-import { type CompatibilityRunRecord, type CompatibilitySuite, type Id, type Principal, HubError } from '@mcp-hub/core';
+import {
+  type CompatibilityRunRecord,
+  type CompatibilitySuite,
+  type Id,
+  type Principal,
+  HubError,
+} from '@mcp-hub/core';
 import { runCompatibility } from '@mcp-hub/testing';
 import type { AppContext } from '../context.js';
 import { requireRole, requireScope } from '../auth/resolve.js';

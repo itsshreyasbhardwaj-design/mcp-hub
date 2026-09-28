@@ -41,8 +41,7 @@ const COLORS: Record<LogLevel, string> = {
 
 export function createLogger(options: LoggerOptions = {}): Logger {
   const level = options.level ?? (process.env['LOG_LEVEL'] as LogLevel) ?? 'info';
-  const format =
-    options.format ?? (process.env['NODE_ENV'] === 'production' ? 'json' : 'pretty');
+  const format = options.format ?? (process.env['NODE_ENV'] === 'production' ? 'json' : 'pretty');
   const base = options.base ?? {};
   const sink = options.sink ?? ((line: string) => process.stdout.write(line + '\n'));
   const threshold = LEVEL_RANK[LOG_LEVELS.includes(level) ? level : 'info'];

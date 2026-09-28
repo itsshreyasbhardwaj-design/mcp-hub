@@ -1,11 +1,5 @@
 import { resolve } from 'node:path';
-import {
-  type Id,
-  type JsonSchema,
-  type OrgRole,
-  type RiskClass,
-  newId,
-} from '@mcp-hub/core';
+import { type Id, type JsonSchema, type OrgRole, type RiskClass, newId } from '@mcp-hub/core';
 import { classifyTool } from '@mcp-hub/security';
 import type { AppContext } from './context.js';
 import { reindexServer } from './services/indexing.js';
@@ -55,7 +49,12 @@ interface DemoServer {
   repositoryUrl: string;
   license: string;
   maintainer: string;
-  versions: Array<{ version: string; tools: DemoTool[]; published: boolean; recommended?: boolean }>;
+  versions: Array<{
+    version: string;
+    tools: DemoTool[];
+    published: boolean;
+    recommended?: boolean;
+  }>;
   health: 'healthy' | 'degraded' | 'failing';
 }
 
@@ -83,10 +82,31 @@ const DEMO_SERVERS: DemoServer[] = [
         version: '1.3.0',
         published: true,
         tools: [
-          { name: 'search_code', description: 'Searches the codebase for a string.', schema: obj({ query: str('Text to search for'), path: str('Restrict to a subtree') }, ['query']) },
-          { name: 'get_file', description: 'Reads a file at a revision.', schema: obj({ path: str('Repository path'), ref: str('Git ref') }, ['path']) },
-          { name: 'create_pull_request', description: 'Opens a pull request.', schema: obj({ title: str('PR title'), head: str('Source branch'), base: str('Target branch') }, ['title', 'head', 'base']) },
-          { name: 'delete_branch', description: 'Permanently deletes a branch. This cannot be undone.', schema: obj({ branch: str('Branch to delete') }, ['branch']) },
+          {
+            name: 'search_code',
+            description: 'Searches the codebase for a string.',
+            schema: obj({ query: str('Text to search for'), path: str('Restrict to a subtree') }, [
+              'query',
+            ]),
+          },
+          {
+            name: 'get_file',
+            description: 'Reads a file at a revision.',
+            schema: obj({ path: str('Repository path'), ref: str('Git ref') }, ['path']),
+          },
+          {
+            name: 'create_pull_request',
+            description: 'Opens a pull request.',
+            schema: obj(
+              { title: str('PR title'), head: str('Source branch'), base: str('Target branch') },
+              ['title', 'head', 'base'],
+            ),
+          },
+          {
+            name: 'delete_branch',
+            description: 'Permanently deletes a branch. This cannot be undone.',
+            schema: obj({ branch: str('Branch to delete') }, ['branch']),
+          },
         ],
       },
       {
@@ -94,11 +114,49 @@ const DEMO_SERVERS: DemoServer[] = [
         published: true,
         recommended: true,
         tools: [
-          { name: 'search_code', description: 'Searches the codebase for a string or regular expression.', schema: obj({ query: str('Text or pattern to search for'), path: str('Restrict to a subtree'), regex: bool('Treat the query as a regular expression') }, ['query']) },
-          { name: 'get_file', description: 'Reads a file at a revision.', schema: obj({ path: str('Repository path'), ref: str('Git ref') }, ['path']) },
-          { name: 'create_pull_request', description: 'Opens a pull request.', schema: obj({ title: str('PR title'), head: str('Source branch'), base: str('Target branch'), draft: bool('Open as a draft') }, ['title', 'head', 'base']) },
-          { name: 'delete_branch', description: 'Permanently deletes a branch. This cannot be undone.', schema: obj({ branch: str('Branch to delete'), force: bool('Delete even when unmerged') }, ['branch', 'force']) },
-          { name: 'list_reviewers', description: 'Lists suggested reviewers for a pull request.', schema: obj({ pull_request: num('Pull request number') }, ['pull_request']) },
+          {
+            name: 'search_code',
+            description: 'Searches the codebase for a string or regular expression.',
+            schema: obj(
+              {
+                query: str('Text or pattern to search for'),
+                path: str('Restrict to a subtree'),
+                regex: bool('Treat the query as a regular expression'),
+              },
+              ['query'],
+            ),
+          },
+          {
+            name: 'get_file',
+            description: 'Reads a file at a revision.',
+            schema: obj({ path: str('Repository path'), ref: str('Git ref') }, ['path']),
+          },
+          {
+            name: 'create_pull_request',
+            description: 'Opens a pull request.',
+            schema: obj(
+              {
+                title: str('PR title'),
+                head: str('Source branch'),
+                base: str('Target branch'),
+                draft: bool('Open as a draft'),
+              },
+              ['title', 'head', 'base'],
+            ),
+          },
+          {
+            name: 'delete_branch',
+            description: 'Permanently deletes a branch. This cannot be undone.',
+            schema: obj(
+              { branch: str('Branch to delete'), force: bool('Delete even when unmerged') },
+              ['branch', 'force'],
+            ),
+          },
+          {
+            name: 'list_reviewers',
+            description: 'Lists suggested reviewers for a pull request.',
+            schema: obj({ pull_request: num('Pull request number') }, ['pull_request']),
+          },
         ],
       },
     ],
@@ -120,11 +178,40 @@ const DEMO_SERVERS: DemoServer[] = [
         published: true,
         recommended: true,
         tools: [
-          { name: 'run_query', description: 'Runs a read-only SQL query against the warehouse.', schema: obj({ sql: str('SQL SELECT statement'), limit: num('Maximum rows to return') }, ['sql']) },
-          { name: 'describe_table', description: 'Returns the schema of a table.', schema: obj({ table: str('Fully-qualified table name') }, ['table']) },
-          { name: 'list_tables', description: 'Lists tables in a schema.', schema: obj({ schema: str('Schema name') }) },
-          { name: 'drop_table', description: 'Drops a table permanently. Irreversible.', schema: obj({ table: str('Fully-qualified table name'), cascade: bool('Drop dependent objects too') }, ['table']) },
-          { name: 'rotate_credentials', description: 'Rotates the warehouse access key.', schema: obj({ api_key: str('Current access key') }, ['api_key']) },
+          {
+            name: 'run_query',
+            description: 'Runs a read-only SQL query against the warehouse.',
+            schema: obj(
+              { sql: str('SQL SELECT statement'), limit: num('Maximum rows to return') },
+              ['sql'],
+            ),
+          },
+          {
+            name: 'describe_table',
+            description: 'Returns the schema of a table.',
+            schema: obj({ table: str('Fully-qualified table name') }, ['table']),
+          },
+          {
+            name: 'list_tables',
+            description: 'Lists tables in a schema.',
+            schema: obj({ schema: str('Schema name') }),
+          },
+          {
+            name: 'drop_table',
+            description: 'Drops a table permanently. Irreversible.',
+            schema: obj(
+              {
+                table: str('Fully-qualified table name'),
+                cascade: bool('Drop dependent objects too'),
+              },
+              ['table'],
+            ),
+          },
+          {
+            name: 'rotate_credentials',
+            description: 'Rotates the warehouse access key.',
+            schema: obj({ api_key: str('Current access key') }, ['api_key']),
+          },
         ],
       },
     ],
@@ -146,9 +233,29 @@ const DEMO_SERVERS: DemoServer[] = [
         published: true,
         recommended: true,
         tools: [
-          { name: 'fetch_url', description: 'Performs an HTTP GET against an arbitrary URL and returns the body.', schema: obj({ url: str('Absolute URL to fetch'), timeout_ms: num('Request timeout') }, ['url']) },
-          { name: 'extract_text', description: 'Extracts readable text from HTML.', schema: obj({ html: str('HTML document') }, ['html']) },
-          { name: 'post_webhook', description: 'Sends a JSON payload to a webhook endpoint.', schema: obj({ url: str('Webhook endpoint'), payload: { type: 'object', description: 'JSON body' } }, ['url', 'payload']) },
+          {
+            name: 'fetch_url',
+            description: 'Performs an HTTP GET against an arbitrary URL and returns the body.',
+            schema: obj({ url: str('Absolute URL to fetch'), timeout_ms: num('Request timeout') }, [
+              'url',
+            ]),
+          },
+          {
+            name: 'extract_text',
+            description: 'Extracts readable text from HTML.',
+            schema: obj({ html: str('HTML document') }, ['html']),
+          },
+          {
+            name: 'post_webhook',
+            description: 'Sends a JSON payload to a webhook endpoint.',
+            schema: obj(
+              {
+                url: str('Webhook endpoint'),
+                payload: { type: 'object', description: 'JSON body' },
+              },
+              ['url', 'payload'],
+            ),
+          },
         ],
       },
     ],
@@ -216,7 +323,12 @@ export async function seed(context: AppContext): Promise<SeedResult> {
           headerKeys: ['Authorization'],
         },
         environment: [
-          { key: 'Authorization', description: 'Bearer token for the demo endpoint', required: true, secret: true },
+          {
+            key: 'Authorization',
+            description: 'Bearer token for the demo endpoint',
+            required: true,
+            secret: true,
+          },
         ],
         supportedPlatforms: ['linux', 'darwin', 'win32'],
         releaseNotes: `DEMO DATA — fictional release notes for ${versionSpec.version}.`,
@@ -246,7 +358,13 @@ export async function seed(context: AppContext): Promise<SeedResult> {
           };
         }),
         resources: [
-          { uri: `${spec.slug}://index`, name: 'Index', description: 'DEMO DATA resource', mimeType: 'application/json', isTemplate: false },
+          {
+            uri: `${spec.slug}://index`,
+            name: 'Index',
+            description: 'DEMO DATA resource',
+            mimeType: 'application/json',
+            isTemplate: false,
+          },
         ],
         prompts: [],
       });
@@ -509,8 +627,18 @@ async function seedTelemetry(
       kind: 'repeated_failures',
       title: 'DEMO DATA — repeated health-check failures',
       evidence: [
-        { label: 'Failed checks in the last 24h', value: '18', source: 'health_checks', observedAt: new Date() },
-        { label: 'Most recent error', value: 'UPSTREAM_ERROR', source: 'health_checks', observedAt: new Date() },
+        {
+          label: 'Failed checks in the last 24h',
+          value: '18',
+          source: 'health_checks',
+          observedAt: new Date(),
+        },
+        {
+          label: 'Most recent error',
+          value: 'UPSTREAM_ERROR',
+          source: 'health_checks',
+          observedAt: new Date(),
+        },
       ],
     });
   }

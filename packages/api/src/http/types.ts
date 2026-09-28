@@ -56,7 +56,11 @@ export interface RouteDefinition {
   summary: string;
 }
 
-export function json(body: unknown, status = 200, headers: Record<string, string> = {}): HubResponse {
+export function json(
+  body: unknown,
+  status = 200,
+  headers: Record<string, string> = {},
+): HubResponse {
   return { status, headers, body };
 }
 

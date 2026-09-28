@@ -78,17 +78,13 @@ export const authRoutes: RouteDefinition[] = [
       }
       const input = parse(devSignInSchema, request.body);
       const session = await provider.signIn(input.email);
-      return json(
-        { signedIn: true, expiresAt: session.expiresAt },
-        200,
-        {
-          'set-cookie': sessionCookie(
-            session.token,
-            session.expiresAt,
-            app.config.appUrl.startsWith('https://'),
-          ),
-        },
-      );
+      return json({ signedIn: true, expiresAt: session.expiresAt }, 200, {
+        'set-cookie': sessionCookie(
+          session.token,
+          session.expiresAt,
+          app.config.appUrl.startsWith('https://'),
+        ),
+      });
     },
   },
   {

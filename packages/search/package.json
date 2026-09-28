@@ -26,5 +26,8 @@
   "dependencies": {
     "@mcp-hub/core": "workspace:*",
     "@mcp-hub/database": "workspace:*"
+  },
+  "devDependencies": {
+    "@mcp-hub/database": "workspace:*"
   }
 }

@@ -78,7 +78,14 @@ export function inspectSchema(
           });
         }
       }
-    } else if (!node['$ref'] && !node['anyOf'] && !node['oneOf'] && !node['allOf'] && !node['enum'] && !node['const']) {
+    } else if (
+      !node['$ref'] &&
+      !node['anyOf'] &&
+      !node['oneOf'] &&
+      !node['allOf'] &&
+      !node['enum'] &&
+      !node['const']
+    ) {
       issues.push({
         path,
         message: 'No "type", "enum", "const" or composition keyword is declared.',
@@ -153,7 +160,10 @@ export function inspectSchema(
             continue;
           }
           const childSchema = child as JsonSchema;
-          if (typeof childSchema['description'] !== 'string' || !childSchema['description'].trim()) {
+          if (
+            typeof childSchema['description'] !== 'string' ||
+            !childSchema['description'].trim()
+          ) {
             issues.push({
               path: childPath,
               message: `Property "${name}" has no description.`,
@@ -195,7 +205,8 @@ export function inspectSchema(
       const branch = node[keyword];
       if (Array.isArray(branch)) {
         branch.forEach((sub, index) => {
-          if (sub && typeof sub === 'object') walk(sub as JsonSchema, `${path}.${keyword}[${index}]`, depth + 1);
+          if (sub && typeof sub === 'object')
+            walk(sub as JsonSchema, `${path}.${keyword}[${index}]`, depth + 1);
         });
       }
     }
@@ -203,7 +214,8 @@ export function inspectSchema(
     const defs = node['$defs'] ?? node['definitions'];
     if (defs && typeof defs === 'object') {
       for (const [name, sub] of Object.entries(defs as Record<string, unknown>)) {
-        if (sub && typeof sub === 'object') walk(sub as JsonSchema, `${path}.$defs.${name}`, depth + 1);
+        if (sub && typeof sub === 'object')
+          walk(sub as JsonSchema, `${path}.$defs.${name}`, depth + 1);
       }
     }
   }
@@ -250,8 +262,8 @@ function describeField(name: string, raw: unknown, required: boolean, depth: num
   if (depth < 4) {
     if (type === 'object' && node['properties'] && typeof node['properties'] === 'object') {
       const req = new Set(Array.isArray(node['required']) ? (node['required'] as string[]) : []);
-      children = Object.entries(node['properties'] as Record<string, unknown>).map(([child, value]) =>
-        describeField(child, value, req.has(child), depth + 1),
+      children = Object.entries(node['properties'] as Record<string, unknown>).map(
+        ([child, value]) => describeField(child, value, req.has(child), depth + 1),
       );
     } else if (type === 'array' && node['items'] && typeof node['items'] === 'object') {
       children = [describeField('[item]', node['items'], false, depth + 1)];
@@ -283,7 +295,9 @@ export function exampleForSchema(schema: unknown, depth = 0): unknown {
     case 'object': {
       const out: Record<string, unknown> = {};
       const properties = (node['properties'] ?? {}) as Record<string, unknown>;
-      const required = new Set(Array.isArray(node['required']) ? (node['required'] as string[]) : []);
+      const required = new Set(
+        Array.isArray(node['required']) ? (node['required'] as string[]) : [],
+      );
       for (const [name, child] of Object.entries(properties)) {
         if (required.size > 0 && !required.has(name)) continue;
         out[name] = exampleForSchema(child, depth + 1);

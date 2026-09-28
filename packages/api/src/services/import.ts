@@ -44,7 +44,9 @@ export function previewImport(raw: string): ImportPreview {
     return {
       source: 'unknown',
       candidates: [],
-      errors: [`The file is not valid JSON: ${err instanceof Error ? err.message : 'parse error'}.`],
+      errors: [
+        `The file is not valid JSON: ${err instanceof Error ? err.message : 'parse error'}.`,
+      ],
     };
   }
 

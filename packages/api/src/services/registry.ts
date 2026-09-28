@@ -195,7 +195,11 @@ export async function deleteServer(
     resourceId: serverId,
     metadata: { slug: server.slug },
   });
-  await emit(context, principal, { type: 'server.deleted', serverId: null, metadata: { slug: server.slug } });
+  await emit(context, principal, {
+    type: 'server.deleted',
+    serverId: null,
+    metadata: { slug: server.slug },
+  });
 }
 
 export interface ListServersInput {

@@ -55,7 +55,10 @@ export function evaluate(
   request: PermissionRequest,
   rules: readonly PermissionRuleRecord[],
 ): PermissionDecision {
-  if (!request.subject.scopes.includes('tools:execute') && !request.subject.scopes.includes('admin')) {
+  if (
+    !request.subject.scopes.includes('tools:execute') &&
+    !request.subject.scopes.includes('admin')
+  ) {
     return {
       effect: 'deny',
       matchedRule: null,
@@ -77,7 +80,10 @@ export function evaluate(
 
   const matches = rules
     .map((rule) => ({ rule, specificity: matchSpecificity(rule, request) }))
-    .filter((entry): entry is { rule: PermissionRuleRecord; specificity: number } => entry.specificity >= 0)
+    .filter(
+      (entry): entry is { rule: PermissionRuleRecord; specificity: number } =>
+        entry.specificity >= 0,
+    )
     .sort(
       (a, b) =>
         b.specificity - a.specificity ||
@@ -120,10 +126,7 @@ export function evaluate(
  * Scores how specifically a rule targets the request.
  * Returns -1 when the rule does not apply at all.
  */
-export function matchSpecificity(
-  rule: PermissionRuleRecord,
-  request: PermissionRequest,
-): number {
+export function matchSpecificity(rule: PermissionRuleRecord, request: PermissionRequest): number {
   let score = 0;
 
   if (rule.subjectUserId !== null) {
@@ -188,7 +191,12 @@ function describeScope(rule: PermissionRuleRecord): string {
  */
 export function summarizeForSubject(
   subject: PermissionSubject,
-  tools: ReadonlyArray<{ serverId: Id<'server'>; versionId: Id<'version'>; name: string; riskClass: RiskClass }>,
+  tools: ReadonlyArray<{
+    serverId: Id<'server'>;
+    versionId: Id<'version'>;
+    name: string;
+    riskClass: RiskClass;
+  }>,
   rules: readonly PermissionRuleRecord[],
 ): { allowed: string[]; requiresApproval: string[]; denied: string[] } {
   const allowed: string[] = [];

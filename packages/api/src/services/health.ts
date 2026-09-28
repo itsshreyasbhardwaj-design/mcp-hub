@@ -49,8 +49,9 @@ export async function checkServerHealth(
   const secrets = await resolveSecrets(context, organizationId, server.id, null);
   const started = performance.now();
 
-  let status: HealthStatus = 'failing';
-  let latencyMs: number | null = null;
+  // Assigned on both the success and failure paths below.
+  let status: HealthStatus;
+  let latencyMs: number;
   let toolCount: number | null = null;
   let initialized = false;
   let timedOut = false;

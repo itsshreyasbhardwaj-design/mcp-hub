@@ -12,7 +12,10 @@ export interface ValidateOptions {
  * Rules are pure and independent, so a rule that throws is reported as its own
  * finding rather than failing the whole run.
  */
-export function validate(target: ValidationTarget, options: ValidateOptions = {}): ValidationReport {
+export function validate(
+  target: ValidationTarget,
+  options: ValidateOptions = {},
+): ValidationReport {
   const started = performance.now();
   const disabled = new Set(options.disabledRules ?? []);
   const findings: ValidationFinding[] = [];
@@ -44,7 +47,9 @@ export function validate(target: ValidationTarget, options: ValidateOptions = {}
   for (const finding of findings) counts[finding.severity] += 1;
 
   const order: Record<Severity, number> = { error: 0, warning: 1, info: 2 };
-  findings.sort((a, b) => order[a.severity] - order[b.severity] || a.location.localeCompare(b.location));
+  findings.sort(
+    (a, b) => order[a.severity] - order[b.severity] || a.location.localeCompare(b.location),
+  );
 
   return {
     outcome: counts.error > 0 ? 'error' : counts.warning > 0 ? 'warning' : 'pass',

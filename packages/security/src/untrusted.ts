@@ -43,7 +43,8 @@ const PATTERNS: Pattern[] = [
     severity: 'error',
     title: 'Attempts to redefine the assistant role',
     detail: 'The text impersonates a system or developer message to change the model behaviour.',
-    regex: /\b(you are now|act as|from now on,? you|new (system )?(prompt|instructions?)|<\|?(system|im_start)\|?>)/i,
+    regex:
+      /\b(you are now|act as|from now on,? you|new (system )?(prompt|instructions?)|<\|?(system|im_start)\|?>)/i,
   },
   {
     rule: 'injection.exfiltration',
@@ -60,7 +61,8 @@ const PATTERNS: Pattern[] = [
     title: 'Instructs the agent to call another tool',
     detail:
       'The text directs the model to invoke a specific tool or endpoint. MCP Hub never chains tool calls from server-provided text.',
-    regex: /\b(you must|always|immediately|be sure to|do not ask)\b[^.!?\n]{0,50}\b(call|invoke|run|execute|use)\b[^.!?\n]{0,30}\b(tool|function|command|endpoint)/i,
+    regex:
+      /\b(you must|always|immediately|be sure to|do not ask)\b[^.!?\n]{0,50}\b(call|invoke|run|execute|use)\b[^.!?\n]{0,30}\b(tool|function|command|endpoint)/i,
   },
   {
     rule: 'injection.hidden-content',
@@ -68,7 +70,7 @@ const PATTERNS: Pattern[] = [
     title: 'Contains hidden or invisible characters',
     detail:
       'Zero-width or bidirectional control characters can hide instructions from a human reviewer while remaining visible to a model.',
-    regex: /[​-‏‪-‮⁦-⁩﻿]/,
+    regex: /[\u200b-\u200f\u202a-\u202e\u2066-\u2069\ufeff]/,
   },
   {
     rule: 'injection.encoded-payload',
@@ -121,8 +123,9 @@ export function scanForInjection(text: string, location: string): InjectionSigna
  */
 export function sanitizeExcerpt(text: string, max = 240): string {
   const visible = text
-    .replace(/[​-‏⁦-⁩﻿]/g, '␣')
-    .replace(/[‪-‮]/g, '␣')
+    .replace(/[\u200b-\u200f\u2066-\u2069\ufeff]/g, '\u2423')
+    .replace(/[\u202a-\u202e]/g, '\u2423')
+    // eslint-disable-next-line no-control-regex -- removing control characters is the point.
     .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '');
   return truncate(visible.trim(), max);
 }
@@ -160,11 +163,15 @@ export function scanCapabilities(capabilities: ScannableCapabilities): Injection
   for (const tool of capabilities.tools) {
     out.push(...scanForInjection(tool.description ?? '', `tools.${tool.name}.description`));
     if (tool.inputSchema) {
-      out.push(...scanForInjection(JSON.stringify(tool.inputSchema), `tools.${tool.name}.inputSchema`));
+      out.push(
+        ...scanForInjection(JSON.stringify(tool.inputSchema), `tools.${tool.name}.inputSchema`),
+      );
     }
   }
   for (const resource of capabilities.resources) {
-    out.push(...scanForInjection(resource.description ?? '', `resources.${resource.uri}.description`));
+    out.push(
+      ...scanForInjection(resource.description ?? '', `resources.${resource.uri}.description`),
+    );
   }
   for (const prompt of capabilities.prompts) {
     out.push(...scanForInjection(prompt.description ?? '', `prompts.${prompt.name}.description`));

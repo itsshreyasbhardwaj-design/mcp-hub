@@ -158,7 +158,9 @@ export class GovernanceRepository {
 
   // --- Compatibility ------------------------------------------------------
 
-  async recordCompatibilityRun(run: Omit<CompatibilityRunRecord, 'id' | 'createdAt'>): Promise<CompatibilityRunRecord> {
+  async recordCompatibilityRun(
+    run: Omit<CompatibilityRunRecord, 'id' | 'createdAt'>,
+  ): Promise<CompatibilityRunRecord> {
     const runId = newId('compatibilityRun');
     const { rows } = await this.db.query(
       `insert into compatibility_runs (
@@ -472,9 +474,7 @@ export class GovernanceRepository {
     return toPermissionRule(row);
   }
 
-  async listPermissionRules(
-    organizationId: Id<'organization'>,
-  ): Promise<PermissionRuleRecord[]> {
+  async listPermissionRules(organizationId: Id<'organization'>): Promise<PermissionRuleRecord[]> {
     const { rows } = await this.db.query(
       'select * from permission_rules where organization_id = $1 order by priority desc, created_at asc',
       [organizationId],
@@ -583,13 +583,7 @@ export class GovernanceRepository {
           set status = $3, decided_by = $4, decision_reason = $5, decided_at = now()
         where organization_id = $1 and id = $2 and status = 'pending'
         returning *`,
-      [
-        input.organizationId,
-        input.approvalId,
-        input.decision,
-        input.decidedBy,
-        input.reason,
-      ],
+      [input.organizationId, input.approvalId, input.decision, input.decidedBy, input.reason],
     );
     const row = rows[0];
     if (!row) {

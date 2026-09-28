@@ -160,12 +160,25 @@ async function collectEvidence(
       if (summary.checks === 0) return [];
 
       const items: EvidenceItem[] = [
-        { label: 'Server', value: `${server.name} (${server.healthStatus})`, source: 'servers', href: `/servers/${server.slug}` },
-        { label: 'Health checks in the last 24h', value: String(summary.checks), source: 'health_checks' },
+        {
+          label: 'Server',
+          value: `${server.name} (${server.healthStatus})`,
+          source: 'servers',
+          href: `/servers/${server.slug}`,
+        },
+        {
+          label: 'Health checks in the last 24h',
+          value: String(summary.checks),
+          source: 'health_checks',
+        },
         { label: 'Uptime', value: `${summary.uptimePercent ?? 0}%`, source: 'health_checks' },
       ];
       if (summary.p95LatencyMs != null) {
-        items.push({ label: 'p95 latency', value: `${summary.p95LatencyMs}ms`, source: 'health_checks' });
+        items.push({
+          label: 'p95 latency',
+          value: `${summary.p95LatencyMs}ms`,
+          source: 'health_checks',
+        });
       }
       if (summary.timeouts > 0) {
         items.push({ label: 'Timeouts', value: String(summary.timeouts), source: 'health_checks' });
@@ -179,7 +192,11 @@ async function collectEvidence(
         });
       }
       for (const incident of incidents) {
-        items.push({ label: `Open incident (${incident.kind})`, value: incident.title, source: 'incidents' });
+        items.push({
+          label: `Open incident (${incident.kind})`,
+          value: incident.title,
+          source: 'incidents',
+        });
       }
       return items;
     }
@@ -189,10 +206,8 @@ async function collectEvidence(
       if (!server) return [];
       const versions = await repositories.registry.listVersions(organizationId, server.id);
       if (versions.length < 2) return [];
-      const to =
-        versions.find((v) => v.version === detected.entities.toVersion) ?? versions[0];
-      const from =
-        versions.find((v) => v.version === detected.entities.fromVersion) ?? versions[1];
+      const to = versions.find((v) => v.version === detected.entities.toVersion) ?? versions[0];
+      const from = versions.find((v) => v.version === detected.entities.fromVersion) ?? versions[1];
       if (!to || !from || to.id === from.id) return [];
 
       const [fromTools, toTools] = await Promise.all([
@@ -205,12 +220,19 @@ async function collectEvidence(
       const removed = [...fromNames].filter((n) => !toNames.has(n));
 
       const items: EvidenceItem[] = [
-        { label: 'Comparing', value: `${from.version} → ${to.version}`, source: 'server_versions', href: `/servers/${server.slug}/versions` },
+        {
+          label: 'Comparing',
+          value: `${from.version} → ${to.version}`,
+          source: 'server_versions',
+          href: `/servers/${server.slug}/versions`,
+        },
         { label: 'Tools before', value: String(fromTools.length), source: 'server_tools' },
         { label: 'Tools after', value: String(toTools.length), source: 'server_tools' },
       ];
-      if (added.length) items.push({ label: 'Added tools', value: added.join(', '), source: 'server_tools' });
-      if (removed.length) items.push({ label: 'Removed tools', value: removed.join(', '), source: 'server_tools' });
+      if (added.length)
+        items.push({ label: 'Added tools', value: added.join(', '), source: 'server_tools' });
+      if (removed.length)
+        items.push({ label: 'Removed tools', value: removed.join(', '), source: 'server_tools' });
       return items;
     }
 
@@ -229,7 +251,10 @@ async function collectEvidence(
         label: `${hit.docType}: ${hit.title}`,
         value: truncate(hit.subtitle ?? hit.body, 120) || '(no description)',
         source: 'search_documents',
-        href: hit.docType === 'server' ? `/servers/${hit.serverId}` : `/tools?q=${encodeURIComponent(hit.title)}`,
+        href:
+          hit.docType === 'server'
+            ? `/servers/${hit.serverId}`
+            : `/tools?q=${encodeURIComponent(hit.title)}`,
       }));
     }
 
@@ -262,8 +287,16 @@ async function collectEvidence(
             value: properties.length ? properties.join(', ') : '(none)',
             source: 'server_tools',
           },
-          { label: 'Required', value: required.length ? required.join(', ') : '(none)', source: 'server_tools' },
-          { label: 'Risk classification', value: tool.riskOverride ?? tool.riskClass, source: 'server_tools' },
+          {
+            label: 'Required',
+            value: required.length ? required.join(', ') : '(none)',
+            source: 'server_tools',
+          },
+          {
+            label: 'Risk classification',
+            value: tool.riskOverride ?? tool.riskClass,
+            source: 'server_tools',
+          },
         ];
       });
     }
@@ -315,12 +348,21 @@ async function collectEvidence(
       ]);
       if (totals.total === 0) return [];
       const items: EvidenceItem[] = [
-        { label: 'Tool calls (7 days)', value: String(totals.total), source: 'tool_invocations', href: '/analytics' },
+        {
+          label: 'Tool calls (7 days)',
+          value: String(totals.total),
+          source: 'tool_invocations',
+          href: '/analytics',
+        },
         { label: 'Succeeded', value: String(totals.succeeded), source: 'tool_invocations' },
         { label: 'Failed', value: String(totals.failed), source: 'tool_invocations' },
       ];
       if (totals.p95LatencyMs != null) {
-        items.push({ label: 'p95 latency', value: `${totals.p95LatencyMs}ms`, source: 'tool_invocations' });
+        items.push({
+          label: 'p95 latency',
+          value: `${totals.p95LatencyMs}ms`,
+          source: 'tool_invocations',
+        });
       }
       for (const tool of top) {
         items.push({

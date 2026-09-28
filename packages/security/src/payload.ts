@@ -17,7 +17,10 @@ export function assertPayloadWithinLimit(value: unknown, maxBytes: number, label
 }
 
 export function byteLength(value: unknown): number {
-  return Buffer.byteLength(typeof value === 'string' ? value : JSON.stringify(value ?? null), 'utf8');
+  return Buffer.byteLength(
+    typeof value === 'string' ? value : JSON.stringify(value ?? null),
+    'utf8',
+  );
 }
 
 /**

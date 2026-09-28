@@ -51,19 +51,53 @@ export function detectIntent(question: string): DetectedIntent {
   const candidates: Array<[AssistantIntent, number]> = [
     [
       'server_health',
-      score([/\bwhy\b.*\b(fail|failing|down|broken|unhealthy|degraded)\b/, /\bhealth\b/, /\buptime\b/, /\bincident\b/, /\btimeout/]),
+      score([
+        /\bwhy\b.*\b(fail|failing|down|broken|unhealthy|degraded)\b/,
+        /\bhealth\b/,
+        /\buptime\b/,
+        /\bincident\b/,
+        /\btimeout/,
+      ]),
     ],
     [
       'version_changes',
-      score([/\bchang(e|ed|es)\b/, /\bbetween\b.*\bv?\d/, /\bdiff\b/, /\bbreaking\b/, /\bupgrade\b/]),
+      score([
+        /\bchang(e|ed|es)\b/,
+        /\bbetween\b.*\bv?\d/,
+        /\bdiff\b/,
+        /\bbreaking\b/,
+        /\bupgrade\b/,
+      ]),
     ],
     [
       'find_servers',
-      score([/\bfind\b/, /\bwhich (servers?|tools?)\b/, /\bsearch\b/, /\blooking for\b/, /\bprovide\b/, /\bany servers?\b/]),
+      score([
+        /\bfind\b/,
+        /\bwhich (servers?|tools?)\b/,
+        /\bsearch\b/,
+        /\blooking for\b/,
+        /\bprovide\b/,
+        /\bany servers?\b/,
+      ]),
     ],
-    ['explain_tool', score([/\bexplain\b/, /\bwhat does\b/, /\bschema\b/, /\bhow do i (call|use)\b/])],
-    ['compatibility_issues', score([/\bcompatib/, /\bconform/, /\bspec\b/, /\bvalidation\b/, /\bwarnings?\b/])],
-    ['usage_stats', score([/\bhow many\b/, /\bmost used\b/, /\busage\b/, /\bcalls?\b.*\b(last|past)\b/, /\berror rate\b/])],
+    [
+      'explain_tool',
+      score([/\bexplain\b/, /\bwhat does\b/, /\bschema\b/, /\bhow do i (call|use)\b/]),
+    ],
+    [
+      'compatibility_issues',
+      score([/\bcompatib/, /\bconform/, /\bspec\b/, /\bvalidation\b/, /\bwarnings?\b/]),
+    ],
+    [
+      'usage_stats',
+      score([
+        /\bhow many\b/,
+        /\bmost used\b/,
+        /\busage\b/,
+        /\bcalls?\b.*\b(last|past)\b/,
+        /\berror rate\b/,
+      ]),
+    ],
   ];
 
   candidates.sort((a, b) => b[1] - a[1]);

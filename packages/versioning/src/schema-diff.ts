@@ -117,7 +117,12 @@ function compareTypes(a: JsonSchema, b: JsonSchema, path: string, changes: Schem
   });
 }
 
-function compareProperties(a: JsonSchema, b: JsonSchema, path: string, changes: SchemaChange[]): void {
+function compareProperties(
+  a: JsonSchema,
+  b: JsonSchema,
+  path: string,
+  changes: SchemaChange[],
+): void {
   const beforeProps = (a['properties'] ?? {}) as Record<string, unknown>;
   const afterProps = (b['properties'] ?? {}) as Record<string, unknown>;
   const names = new Set([...Object.keys(beforeProps), ...Object.keys(afterProps)]);
@@ -158,7 +163,12 @@ function compareProperties(a: JsonSchema, b: JsonSchema, path: string, changes: 
   }
 }
 
-function compareRequired(a: JsonSchema, b: JsonSchema, path: string, changes: SchemaChange[]): void {
+function compareRequired(
+  a: JsonSchema,
+  b: JsonSchema,
+  path: string,
+  changes: SchemaChange[],
+): void {
   const before = new Set(Array.isArray(a['required']) ? (a['required'] as string[]) : []);
   const after = new Set(Array.isArray(b['required']) ? (b['required'] as string[]) : []);
 
@@ -216,7 +226,8 @@ function compareEnums(a: JsonSchema, b: JsonSchema, path: string, changes: Schem
       after,
       breaking: true,
       rule: 'schema.enum-added',
-      detail: 'The value is now restricted to an enumeration; previously valid values may be rejected.',
+      detail:
+        'The value is now restricted to an enumeration; previously valid values may be rejected.',
     });
     return;
   }
@@ -251,7 +262,12 @@ function compareEnums(a: JsonSchema, b: JsonSchema, path: string, changes: Schem
   }
 }
 
-function compareConstraints(a: JsonSchema, b: JsonSchema, path: string, changes: SchemaChange[]): void {
+function compareConstraints(
+  a: JsonSchema,
+  b: JsonSchema,
+  path: string,
+  changes: SchemaChange[],
+): void {
   for (const [keyword, tighteningDirection] of NUMERIC_TIGHTENING) {
     const before = a[keyword];
     const after = b[keyword];

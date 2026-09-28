@@ -40,7 +40,9 @@ export class IdentityRepository {
   }
 
   async findUserByExternalId(externalId: string): Promise<UserRecord | null> {
-    const { rows } = await this.db.query('select * from users where external_id = $1', [externalId]);
+    const { rows } = await this.db.query('select * from users where external_id = $1', [
+      externalId,
+    ]);
     return rows[0] ? toUser(rows[0]) : null;
   }
 
@@ -50,7 +52,9 @@ export class IdentityRepository {
   }
 
   async findUserByEmail(email: string): Promise<UserRecord | null> {
-    const { rows } = await this.db.query('select * from users where lower(email) = lower($1)', [email]);
+    const { rows } = await this.db.query('select * from users where lower(email) = lower($1)', [
+      email,
+    ]);
     return rows[0] ? toUser(rows[0]) : null;
   }
 

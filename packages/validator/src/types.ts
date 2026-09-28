@@ -37,7 +37,12 @@ export interface ValidationTarget {
     outputSchema?: JsonSchema | null;
     annotations?: Record<string, unknown> | null;
   }>;
-  resources: Array<{ uri: string; name?: string | null; description?: string | null; mimeType?: string | null }>;
+  resources: Array<{
+    uri: string;
+    name?: string | null;
+    description?: string | null;
+    mimeType?: string | null;
+  }>;
   prompts: Array<{
     name: string;
     description?: string | null;

@@ -2,13 +2,7 @@ export type Visibility = 'public' | 'organization' | 'private';
 export type ServerStatus = 'draft' | 'active' | 'deprecated' | 'archived';
 export type HealthStatus = 'healthy' | 'degraded' | 'failing' | 'unknown';
 export type RiskClass =
-  | 'READ'
-  | 'WRITE'
-  | 'NETWORK'
-  | 'CREDENTIAL'
-  | 'DESTRUCTIVE'
-  | 'ADMIN'
-  | 'UNKNOWN';
+  'READ' | 'WRITE' | 'NETWORK' | 'CREDENTIAL' | 'DESTRUCTIVE' | 'ADMIN' | 'UNKNOWN';
 export type Severity = 'error' | 'warning' | 'info';
 export type PermissionEffect = 'allow' | 'require_approval' | 'deny';
 
@@ -178,7 +172,11 @@ export interface ExecutionResult {
   durationMs: number;
   riskClass: RiskClass;
   decision: { effect: PermissionEffect; reason: string; source: string };
-  result: { content: Array<Record<string, unknown>>; structuredContent?: unknown; isError?: boolean } | null;
+  result: {
+    content: Array<Record<string, unknown>>;
+    structuredContent?: unknown;
+    isError?: boolean;
+  } | null;
   error: { code: string; message: string } | null;
   approvalId: string | null;
 }

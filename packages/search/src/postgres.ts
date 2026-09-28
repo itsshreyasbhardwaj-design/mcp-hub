@@ -119,7 +119,10 @@ function toResult(hit: SearchHitRow, query: string): SearchResult {
 /** Extracts a short window of body text around the first query term. */
 export function snippetAround(body: string, query: string, width = 160): string {
   if (!body) return '';
-  const firstTerm = query.split(/\s+/).find((t) => t.length > 2)?.toLowerCase();
+  const firstTerm = query
+    .split(/\s+/)
+    .find((t) => t.length > 2)
+    ?.toLowerCase();
   if (!firstTerm) return truncate(body, width);
   const index = body.toLowerCase().indexOf(firstTerm);
   if (index === -1) return truncate(body, width);

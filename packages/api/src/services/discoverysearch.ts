@@ -80,7 +80,11 @@ export async function exploreTools(
     {
       query: input.query ?? null,
       ...(input.riskClass
-        ? { riskClass: input.riskClass as Parameters<typeof context.repositories.registry.searchToolsAcrossServers>[1]['riskClass'] }
+        ? {
+            riskClass: input.riskClass as Parameters<
+              typeof context.repositories.registry.searchToolsAcrossServers
+            >[1]['riskClass'],
+          }
         : {}),
       serverId: (input.serverId ?? null) as never,
       preferredVersionsOnly: input.preferredVersionsOnly ?? true,

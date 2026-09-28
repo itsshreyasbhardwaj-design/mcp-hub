@@ -1,5 +1,14 @@
 import { z } from 'zod';
-import { HubError, RISK_CLASSES, SERVER_STATUS, VISIBILITY, PERMISSION_EFFECTS, ORG_ROLES, API_SCOPES, COMPATIBILITY_SUITES } from '@mcp-hub/core';
+import {
+  HubError,
+  RISK_CLASSES,
+  SERVER_STATUS,
+  VISIBILITY,
+  PERMISSION_EFFECTS,
+  ORG_ROLES,
+  API_SCOPES,
+  COMPATIBILITY_SUITES,
+} from '@mcp-hub/core';
 
 /**
  * Request validation.
@@ -22,7 +31,10 @@ const slug = z
   .string()
   .min(2)
   .max(64)
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Must be lowercase alphanumeric segments separated by hyphens');
+  .regex(
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    'Must be lowercase alphanumeric segments separated by hyphens',
+  );
 
 const httpUrl = z
   .string()

@@ -3,7 +3,12 @@ import type { Id, OrgRole, Principal, UserRecord } from '@mcp-hub/core';
 export interface AuthenticatedUser {
   user: UserRecord;
   /** Organizations the user belongs to, with their role in each. */
-  memberships: Array<{ organizationId: Id<'organization'>; slug: string; name: string; role: OrgRole }>;
+  memberships: Array<{
+    organizationId: Id<'organization'>;
+    slug: string;
+    name: string;
+    role: OrgRole;
+  }>;
 }
 
 export interface AuthRequest {

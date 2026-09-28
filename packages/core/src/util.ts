@@ -50,7 +50,10 @@ export function unique<T>(values: readonly T[]): T[] {
   return [...new Set(values)];
 }
 
-export function groupBy<T, K extends string>(items: readonly T[], key: (item: T) => K): Record<K, T[]> {
+export function groupBy<T, K extends string>(
+  items: readonly T[],
+  key: (item: T) => K,
+): Record<K, T[]> {
   const out = {} as Record<K, T[]>;
   for (const item of items) {
     const k = key(item);

@@ -1,4 +1,11 @@
-import { type ApiKeyRecord, type ApiScope, type Id, type Principal, API_SCOPES, HubError } from '@mcp-hub/core';
+import {
+  type ApiKeyRecord,
+  type ApiScope,
+  type Id,
+  type Principal,
+  API_SCOPES,
+  HubError,
+} from '@mcp-hub/core';
 import { generateApiKey } from '@mcp-hub/security';
 import type { AppContext } from '../context.js';
 import { requireRole, requireUser } from '../auth/resolve.js';
@@ -26,7 +33,9 @@ export async function createApiKey(
       validScopes: API_SCOPES,
     });
   }
-  const invalid = input.scopes.filter((scope) => !(API_SCOPES as readonly string[]).includes(scope));
+  const invalid = input.scopes.filter(
+    (scope) => !(API_SCOPES as readonly string[]).includes(scope),
+  );
   if (invalid.length > 0) {
     throw HubError.badRequest(`Unknown scope(s): ${invalid.join(', ')}.`, {
       validScopes: API_SCOPES,
