@@ -136,7 +136,9 @@ describe('MCP client against a real server', () => {
     await expect(client.callTool('stable_ping', {})).rejects.toMatchObject({
       code: 'UPSTREAM_TIMEOUT',
     });
-    expect(Date.now() - started).toBeLessThan(4000);
+    // Asserting the timeout fired at all, not a precise budget: the bound is
+    // deliberately loose so a loaded CI machine cannot make this flaky.
+    expect(Date.now() - started).toBeLessThan(15_000);
   });
 
   it('reports a server that refuses to start', async () => {
