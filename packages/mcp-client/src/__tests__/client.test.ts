@@ -129,7 +129,11 @@ describe('MCP client against a real server', () => {
         envKeys: ['FLAKY_HANG_TOOL'],
       },
       secrets: { FLAKY_HANG_TOOL: 'stable_ping' },
+      // A short budget for the call, a generous one for the handshake: a stdio
+      // server has to be spawned first, which is slow on a loaded machine and
+      // says nothing about how fast the server answers once it is up.
       requestTimeoutMs: 800,
+      connectTimeoutMs: 20_000,
     });
     openClients.push(client);
     const started = Date.now();
@@ -139,6 +143,20 @@ describe('MCP client against a real server', () => {
     // Asserting the timeout fired at all, not a precise budget: the bound is
     // deliberately loose so a loaded CI machine cannot make this flaky.
     expect(Date.now() - started).toBeLessThan(15_000);
+  });
+
+  it('judges the handshake on its own budget, not the per-call one', async () => {
+    const client = await connectToServer({
+      transport: stdio(NOTES_SERVER),
+      // A per-call budget far too short to spawn a process: connecting must
+      // still succeed, because the handshake has its own budget.
+      requestTimeoutMs: 1,
+      connectTimeoutMs: 20_000,
+    });
+    openClients.push(client);
+    expect(client.info?.serverInfo.name).toBe('example-notes-server');
+    // The tight per-call budget still applies to everything afterwards.
+    await expect(client.listTools()).rejects.toMatchObject({ code: 'UPSTREAM_TIMEOUT' });
   });
 
   it('reports a server that refuses to start', async () => {

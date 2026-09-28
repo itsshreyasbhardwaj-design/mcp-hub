@@ -1,5 +1,6 @@
 import { resolve } from 'node:path';
 import { type Id, type JsonSchema, type OrgRole, type RiskClass, newId } from '@mcp-hub/core';
+import { deriveHealthStatus } from '@mcp-hub/analytics';
 import { classifyTool } from '@mcp-hub/security';
 import type { AppContext } from './context.js';
 import { reindexServer } from './services/indexing.js';
@@ -543,8 +544,15 @@ async function seedTelemetry(
 
   for (let i = 47; i >= 0; i -= 1) {
     const checkedAt = new Date(now - i * 30 * 60 * 1000);
-    const failed = rand() < profile.failRate;
-    const latency = Math.round(profile.baseLatency + rand() * profile.spread);
+    // The newest check is fixed to the profile so the rolled-up status the
+    // dashboard shows agrees with the story this demo server is telling.
+    // Everything older is generated, so the history still looks lived-in.
+    const isNewest = i === 0;
+    const failed = isNewest ? input.health === 'failing' : rand() < profile.failRate;
+    const latency =
+      isNewest && input.health === 'degraded'
+        ? 6000
+        : Math.round(profile.baseLatency + rand() * profile.spread);
     await governance.recordHealthCheck({
       organizationId: input.organizationId,
       serverId: input.serverId,
@@ -619,6 +627,22 @@ async function seedTelemetry(
       where organization_id = $1 and server_id = $2`,
     [input.organizationId, input.serverId],
   );
+
+  // Roll the generated checks up onto the server, the same way a real health
+  // check does. Without this the demo would show servers as never-checked
+  // while their own charts were full of checks.
+  const recent = await governance.listHealthChecks(input.organizationId, input.serverId, {
+    limit: 30,
+  });
+  const latest = recent[0];
+  if (latest) {
+    await registry.setHealthStatus(
+      input.organizationId,
+      input.serverId,
+      deriveHealthStatus(recent),
+      latest.checkedAt,
+    );
+  }
 
   if (input.health === 'failing') {
     await governance.openIncident({

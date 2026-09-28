@@ -11,6 +11,8 @@ export interface ConnectOptions {
   /** Decrypted credential values, keyed by env-var or header name. */
   secrets?: Record<string, string>;
   requestTimeoutMs?: number;
+  /** Separate budget for the handshake; a stdio server has to start first. */
+  connectTimeoutMs?: number;
   maxPayloadBytes?: number;
   /** Overrides the process SSRF policy; used by tests. */
   ssrfPolicy?: SsrfPolicy;
@@ -69,6 +71,9 @@ export async function connectToServer(options: ConnectOptions): Promise<McpClien
   const client = new McpClient({
     transport: buildTransport(options),
     requestTimeoutMs: options.requestTimeoutMs ?? config.security.outboundTimeoutMs,
+    connectTimeoutMs:
+      options.connectTimeoutMs ??
+      Math.max(options.requestTimeoutMs ?? 0, config.security.outboundTimeoutMs),
     ...(options.clientInfo ? { clientInfo: options.clientInfo } : {}),
   });
 

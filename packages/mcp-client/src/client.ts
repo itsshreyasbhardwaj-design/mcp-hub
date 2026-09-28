@@ -23,6 +23,14 @@ export interface McpClientOptions {
   transport: McpTransport;
   /** Per-request timeout. Every call is bounded; none can hang a worker. */
   requestTimeoutMs: number;
+  /**
+   * Timeout for the initialize handshake. Defaults to `requestTimeoutMs`.
+   *
+   * A stdio server has to be spawned and reach its event loop before it can
+   * answer, which on a loaded machine takes far longer than a warm call. Using
+   * one budget for both means a slow *start* is misreported as a slow server.
+   */
+  connectTimeoutMs?: number;
   clientInfo?: { name: string; version: string };
 }
 
@@ -79,11 +87,15 @@ export class McpClient {
     });
 
     const startedAt = performance.now();
-    const result = (await this.request('initialize', {
-      protocolVersion: SUPPORTED_PROTOCOL_VERSION,
-      capabilities: { roots: { listChanged: false }, sampling: {} },
-      clientInfo: this.options.clientInfo ?? { name: 'mcp-hub', version: '0.1.0' },
-    })) as InitializeResult;
+    const result = (await this.request(
+      'initialize',
+      {
+        protocolVersion: SUPPORTED_PROTOCOL_VERSION,
+        capabilities: { roots: { listChanged: false }, sampling: {} },
+        clientInfo: this.options.clientInfo ?? { name: 'mcp-hub', version: '0.1.0' },
+      },
+      this.options.connectTimeoutMs ?? this.options.requestTimeoutMs,
+    )) as InitializeResult;
 
     if (!result || typeof result.protocolVersion !== 'string') {
       throw new HubError('UPSTREAM_ERROR', 'MCP server returned a malformed initialize result.');
@@ -185,7 +197,7 @@ export class McpClient {
     return items;
   }
 
-  async request(method: string, params: unknown): Promise<unknown> {
+  async request(method: string, params: unknown, timeoutMs?: number): Promise<unknown> {
     if (this.closed) throw new HubError('UPSTREAM_ERROR', 'The MCP session is closed.');
     const id = this.nextId++;
     const message: JsonRpcRequest = { jsonrpc: JSONRPC_VERSION, id, method, params };
@@ -204,7 +216,11 @@ export class McpClient {
     }
 
     try {
-      return await withTimeout(promise, this.options.requestTimeoutMs, `MCP ${method}`);
+      return await withTimeout(
+        promise,
+        timeoutMs ?? this.options.requestTimeoutMs,
+        `MCP ${method}`,
+      );
     } catch (err) {
       this.pending.delete(id);
       if (err instanceof HubError) throw err;
@@ -212,7 +228,7 @@ export class McpClient {
       if (message_.includes('timed out')) {
         throw new HubError(
           'UPSTREAM_TIMEOUT',
-          `MCP server did not answer ${method} within ${this.options.requestTimeoutMs}ms.`,
+          `MCP server did not answer ${method} within ${timeoutMs ?? this.options.requestTimeoutMs}ms.`,
         );
       }
       throw new HubError('UPSTREAM_ERROR', message_, { cause: err });
