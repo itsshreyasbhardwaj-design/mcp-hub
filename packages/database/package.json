@@ -31,6 +31,6 @@
     "@mcp-hub/config": "workspace:*",
     "@mcp-hub/observability": "workspace:*",
     "@electric-sql/pglite": "^0.5.8",
-    "pg": "^8.23.0"
+    "pg": "^8.23.1"
   }
 }
