@@ -4,7 +4,7 @@ updates:
     directory: /
     schedule:
       interval: weekly
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 0
     ignore:
       # typescript-eslint 8.x supports TypeScript <6.1, so a major TypeScript
       # bump breaks lint until the linter catches up. Minor and patch are fine.
