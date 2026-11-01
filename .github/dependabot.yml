@@ -18,6 +18,7 @@ updates:
         dependency-type: production
 
   - package-ecosystem: github-actions
+    open-pull-requests-limit: 0
     directory: /
     schedule:
       interval: monthly
