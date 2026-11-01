@@ -37,6 +37,6 @@
     "@mcp-hub/search": "workspace:*",
     "@mcp-hub/analytics": "workspace:*",
     "@mcp-hub/assistant": "workspace:*",
-    "zod": "^4.6.5"
+    "zod": "^4.6.6"
   }
 }
